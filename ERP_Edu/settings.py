@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,8 +85,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'erp',
-        'USER': 'root',
-        'PASSWORD': 'MySQL',
+        'USER': getenv('USER'),
+        'PASSWORD': getenv('PASSWORD'),
         'HOST': 'localhost'
     }
 }

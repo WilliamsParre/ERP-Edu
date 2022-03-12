@@ -1,4 +1,8 @@
-{% extends 'main.html' %}
-{% block content %}
-<h1>Hello from home.html file</h1>
+{% extends 'main.html' %} {% block content %}
+<div>
+    <h1>Hello from home.html file</h1>
+    {% for i in courses %}
+        <h1>Course : {{i.name}}</h1>
+    {% endfor %}
+</div>
 {% endblock content %}
