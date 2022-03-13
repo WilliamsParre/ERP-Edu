@@ -1,0 +1,20 @@
+.main {
+    justify-content: center;
+    margin-top: 100px;
+    width: 100%;
+    min-height: 100%;
+    padding: 50px;
+}
+.form h2{
+    text-align: center;
+    padding: 10px;
+}
+
+.form {
+    padding: 20px;
+    width: 30%;
+    border-radius: 5%;
+}
+.f1 {
+    margin-top: 1rem;
+}

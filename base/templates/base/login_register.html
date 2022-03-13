@@ -1,29 +1,48 @@
 {% extends 'main.html' %}
+{% load static %}
+{% load bootstrap3 %}
 {% block content%}
-{% if page == 'login' %}
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/login_register.css' %}">
 <div>
-    <form method = "POST" action="">
-        {% csrf_token %}
-        <label>User name : </label>
-        <input type="text" name="username" placeholder="Enter username"/>
-        <label>Password : </label>
-        <input type="password" name="password" placeholder="Enter password"/>
+    {% if page == 'login' %}
+    <div class="main">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="container form">
+                <h2>Login</h2>
+                <form>
+                    <div class="form-group f1">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                            placeholder="Enter your username">
+                    </div>
+                    <div class="form-group f1">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="password"
+                            placeholder="Enter your password">
+                    </div>
+                    <div class="f1">
+                        <input type="submit" class="btn btn-primary" value="Login" style="width:100%;" />
+                    </div>
+                </form>
+                <!-- <hr/> -->
 
-        <input type="submit" value="Login"/>
-    </form>
-    <p>Don't have an accout ? </p>
-    <a href="{% url 'signup' %}">Sign up</a>
+                <p style="margin-top: 30px;">Don't have an accout?<a href="{% url 'signup' %}"
+                        style="float:right;text-decoration: none;">Sign up</a></p>
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <div class="main">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="container" style="width: 50%;">
+                <h2>Register</h2>
+                {% bootstrap_form form %}
+                <input type="submit" class="btn btn-success" style="width: 100%;margin-top: 2rem;" value="Sign Up"/>
+            </div>
+        </form>
+    </div>
+    {% endif %}
 </div>
-{% else %}
-<div>
-    <form method = "POST" action="">
-        {% csrf_token %}
-
-        {{form.as_p}}
-        <input type="submit" value="Signup"/>
-    </form>
-    <p>Already have an account ? </p>
-    <a href="{% url 'login' %}">Login</a>
-</div>
-{% endif %}
 {% endblock content %}

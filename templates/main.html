@@ -18,11 +18,13 @@
 <body>
     {% include 'navbar.html' %}
     {% if messages %}
-    <ul class="messages">
+    <div class="container" style="margin-top: 5px;">
         {% for message in messages %}
-        <li>{{ message }}</li>
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
         {% endfor %}
-    </ul>
+    </div>
     {% endif %}
     <!-- <img src="{% static 'images/Pic.jpg'%}" width="700" /> -->
     {% block content %}
