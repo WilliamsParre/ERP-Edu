@@ -6,13 +6,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from .models import Course
+from .models import Course, Student
+from .utils import get_chart
 
 @login_required(login_url='login')
 def home(request):
     courses = Course.objects.all()
-    c = {'courses': courses}
-    return render(request, 'base/home.html', c)
+    s = Student.objects.all()
+    x = [i.email for i in s]
+    y = [y.id for y in s]
+    chart = get_chart(x,y)
+    chart = {'chart':chart}
+    return render(request, 'base/home.html', chart)
 
 def login_page(request):
 
@@ -65,3 +70,10 @@ def user_profile(request, pk):
     user = User.objects.get(id=pk)
     context = {'user': user}
     return render(request, 'base/profile.html', context)
+
+def chart(request):
+    s = Student.objects.all()
+    x = [i.email for i in s]
+    y = [y.id for y in s]
+    chart = get_chart(x,y)
+    return render(request, 'base/chart.html', {'chart':chart})

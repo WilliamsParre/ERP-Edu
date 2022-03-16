@@ -1,15 +1,15 @@
 {% extends 'main.html' %}
 {% load static %}
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/home.css' %}">
+<!-- <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/home.css' %}"> -->
 {% block content %}
-<div class="homepage">
-    <div>
-        {% include 'sidebar.html' %}
-    </div>
-    <div>
-        <!-- {% for i in courses %}
-        <h1>Course : {{i.name}}</h1>
-        {% endfor %} -->
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-2">
+            {% include 'sidebar.html' %}
+        </div>
+        <div class="col">
+            {% include 'base/dashboard.html' %}            
+        </div>
     </div>
 </div>
 {% endblock content %}
