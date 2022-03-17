@@ -77,3 +77,6 @@ def chart(request):
     y = [y.id for y in s]
     chart = get_chart(x,y)
     return render(request, 'base/chart.html', {'chart':chart})
+
+def contact_us(request):
+    return render(request, 'base/contactus.html')
