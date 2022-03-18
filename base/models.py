@@ -20,7 +20,7 @@ class Student(models.Model):
     u_id = models.BigIntegerField()
     email = models.EmailField()
     gender = models.CharField(max_length=10, choices=[('Male','Male'), ('Female', 'Female'), ('Others', 'Others')])
-    profile_pic = models.ImageField(upload_to='base/templates/')
+    profile_pic = models.ImageField(upload_to='base/templates/', blank=True)
     mobile = models.BigIntegerField()
     blood = models.CharField(max_length=5)
     parent_name = models.CharField(max_length=200)

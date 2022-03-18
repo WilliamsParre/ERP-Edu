@@ -25,10 +25,13 @@
 <body>
     {% include 'navbar.html' %}
     {% if messages %}
-    <div class="container" style="margin-top: 5px;">
+    <div class="container p-1">
         {% for message in messages %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true"></span>
+            </button>
         </div>
         {% endfor %}
     </div>

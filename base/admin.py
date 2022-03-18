@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from .models import Course, Student
 
-admin.site.site_header = 'ERP Admin Panel'
+admin.site.site_header = 'ERP - Admin'
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('code','name', 'description', 'semester', 'year', 'created')
