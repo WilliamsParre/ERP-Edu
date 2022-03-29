@@ -13,7 +13,9 @@
   <!-- Favicons -->
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href='{% static "assets/vendor/aos/aos.css"%}' rel="stylesheet">
@@ -53,8 +55,9 @@
           <li><a class="nav-link scrollto" href="#team">Team</a></li>
 
           </li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="getstarted scrollto" href="#about">Get Started</a></li>
+          <li><a class="nav-link scrollto" href="#contactus">Contact Us</a></li>
+          <li><a class="getstarted scrollto" href="{% url 'login' %}">Sign In</a></li>
+          <li><a class="getstarted scrollto" href="{% url 'signup'%}">Get Started</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -67,11 +70,12 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-          <h1>Better Solutions For Your Business</h1>
+        <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1"
+          data-aos="fade-up" data-aos-delay="200">
+          <h1>Where Orginisations Plan</h1>
           <div class="d-flex justify-content-center justify-content-lg-start">
-            <a href="#about" class="btn-get-started scrollto">Get Started</a>
-             </div>
+            <a href="{% url 'signup'%}" class="btn-get-started scrollto">Get Started</a>
+          </div>
         </div>
         <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
           <img src='{% static "assets/img/home_main.jpg"%}' class="img-fluid animated" alt="">
@@ -96,20 +100,24 @@
         <div class="row content">
           <div class="col-lg-6">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
+              The education industry is always on the move. Colleges/ Universities are wrapped up with some activities
+              like Admissions, exams, faculty, Fees management, Library, Transportation, Hostel facilities, Parents
+              module etc. for different modules colleges are depending on multiple softwares.
+            </p>
+            <p>
+              Benifits :
             </p>
             <ul>
-              <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat</li>
-              <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in voluptate velit</li>
-              <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat</li>
+              <li><i class="ri-check-double-line"></i> Saves money</li>
+              <li><i class="ri-check-double-line"></i> Saves time</li>
+              <li><i class="ri-check-double-line"></i> Saves efforts</li>
+              <li><i class="ri-check-double-line"></i> Reduces maintenance</li>
             </ul>
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0">
             <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
+              Hence to reduce the cost
+              we come up with a single solution to overcome the issues facing by the Colleges/Universities.
             </p>
 
           </div>
@@ -126,7 +134,7 @@
 
         <div class="section-title">
           <h2>Services</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+          <p>Servies provided by us</p>
         </div>
 
         <div class="row">
@@ -134,31 +142,34 @@
             <div class="icon-box">
               <div class="icon"><i class="bx bxl-dribbble"></i></div>
               <h4><a href="">Manage</a></h4>
-              <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
+              <p>Manage all your users at one place. Manage your employees, staff and students.</p>
             </div>
           </div>
 
-          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+            data-aos-delay="200">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-file"></i></div>
               <h4><a href="">Attendence</a></h4>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
+              <p>Post, manage, edit, update and store your attendence.</p>
             </div>
           </div>
 
-          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
+          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in"
+            data-aos-delay="300">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-tachometer"></i></div>
               <h4><a href="">Bills</a></h4>
-              <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
+              <p>You can estimate, analyse, maintain and pay all your bills.</p>
             </div>
           </div>
 
-          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
+          <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in"
+            data-aos-delay="400">
             <div class="icon-box">
               <div class="icon"><i class="bx bx-layer"></i></div>
               <h4><a href="">Accounts</a></h4>
-              <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
+              <p>Manage, verify, analyse, customize and calculate all your finance stuff.</p>
             </div>
           </div>
 
@@ -177,18 +188,18 @@
 
         <div class="section-title">
           <h2>Team</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+          <p>Developers</p>
         </div>
 
         <div class="row">
 
           <div class="col-lg-6">
             <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
-              <div class="pic"><img src='{% static "assets/img/team/Williams_pic.jpg"%}'  class="img-fluid" alt=""></div>
+              <div class="pic"><img src='{% static "assets/img/team/Williams_pic.jpg"%}' class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>WILLIAMS P</h4>
                 <span>Frontend and Backend Developer</span>
-                <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+                <p>Student at KL University, Vijayawada</p>
                 <div class="social">
                   <a href="https://www.facebook.com/parre.william/"><i class="ri-facebook-fill"></i></a>
                   <a href="https://www.instagram.com/william_522124/"><i class="ri-instagram-fill"></i></a>
@@ -200,15 +211,17 @@
 
           <div class="col-lg-6 mt-4 mt-lg-0">
             <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="200">
-              <div class="pic"><img src='{% static "assets/img/team/Leela_Krishna_Pic.jpg"%}'  class="img-fluid" alt=""></div>
+              <div class="pic"><img src='{% static "assets/img/team/Leela_Krishna_Pic.jpg"%}' class="img-fluid" alt="">
+              </div>
               <div class="member-info">
                 <h4>Leela Krishna Kumar P</h4>
                 <span>Frontend Developer</span>
-                <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+                <p>Student at KL University, Vijayawada</p>
                 <div class="social">
                   <a href="https://www.facebook.com/leela.tejlover"><i class="ri-facebook-fill"></i></a>
                   <a href="https://www.instagram.com/leela_tejlover/"><i class="ri-instagram-fill"></i></a>
-                  <a href="https://www.linkedin.com/in/leela-krishna-kumar-pallapothu-046366215/"> <i class="ri-linkedin-box-fill"></i> </a>
+                  <a href="https://www.linkedin.com/in/leela-krishna-kumar-pallapothu-046366215/"> <i
+                      class="ri-linkedin-box-fill"></i> </a>
                 </div>
               </div>
             </div>
@@ -220,7 +233,7 @@
               <div class="member-info">
                 <h4>Brahmender Shaik</h4>
                 <span>Frontend Developer</span>
-                <p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
+                <p>Student at KL University, Vijayawada</p>
                 <div class="social">
                   <a href="https://www.facebook.com/profile.php?id=100069255546901"><i class="ri-facebook-fill"></i></a>
                   <a href="https://www.instagram.com/skb_25202/"><i class="ri-instagram-fill"></i></a>
@@ -237,6 +250,24 @@
       </div>
     </section><!-- End Team Section -->
 
+    <div class="container" id="contactus">
+      <form action="" class="container" style="width: 40%;margin-top:10rem;margin-bottom: 10rem;">
+        <h2>Contact Us</h2>
+        <div class="mb-3">
+          <label for="Input1" class="form-label">Phone Number</label>
+          <input type="number" class="form-control" id="Input1" placeholder="9876543210">
+        </div>
+        <div class="mb-3">
+          <label for="Input2" class="form-label">Phone Number</label>
+          <input type="email" class="form-control" id="Input2" placeholder="name@gmail.com">
+        </div>
+        <div class="mb-3">
+          <label for="Textarea" class="form-label">Message </label>
+          <textarea class="form-control" id="Textarea" rows="6" placeholder="Enter your query here "></textarea>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit">
+      </form>
+    </div>
 
 
 
@@ -247,7 +278,7 @@
   <footer id="footer">
 
 
-
+    <hr />
     <div class="footer-top">
       <div class="container">
         <div class="row">
@@ -256,11 +287,11 @@
             <h3>ERP</h3>
             <p>
               KL Deemed to be University<br />
-                        Green fields, vaddeswaram<br />
-                        Guntur, AP., 522502<br />
-                        Tel. : +91 939 239 8378<br />
-                        Fax : +91 868 847 3849<br />
-              <strong>Email:</strong> 2000031326@kluniversity.in<br>
+              Green fields, vaddeswaram<br />
+              Guntur, AP., 522502<br /><br />
+              Tel. : +91 939 239 8378<br />
+              Fax : +91 868 847 3849<br /><br />
+              <strong>Email:</strong> <a href="mailto:2000031326@kluniversity.in">2000031326@kluniversity.in</a><br />
             </p>
           </div>
 
@@ -271,7 +302,9 @@
               <li><i class="bx bx-chevron-right"></i> <a href="#about">About us</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#services">Services</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#team">Team Members</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Contact Us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#contactus">Contact Us</a></li>
+              <li><i class="bx bx-chevron-right"></i><a href="{% url 'login' %}">Sign In</a></li>
+              <li><i class="bx bx-chevron-right"></i><a href="{% url 'signup' %}">Sign Up</a></li>
             </ul>
           </div>
 
@@ -287,9 +320,9 @@
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Our Social Networks</h4>
-            <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
+            <p>Get in touch with us at</p>
             <div class="social-links mt-3">
-             <a href="https://www.facebook.com/parre.william/" class="facebook"><i class="bx bxl-facebook"></i></a>
+              <a href="https://www.facebook.com/parre.william/" class="facebook"><i class="bx bxl-facebook"></i></a>
               <a href="https://www.instagram.com/william_522124/" class="instagram"><i class="bx bxl-instagram"></i></a>
               <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
               <a href="https://www.linkedin.com/in/williams-p/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
@@ -308,7 +341,8 @@
   </footer><!-- End Footer -->
 
   <div id="preloader"></div>
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src='{% static "assets/vendor/aos/aos.js"%}'></script>
