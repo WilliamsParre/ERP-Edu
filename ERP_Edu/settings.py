@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
 
+    'home.apps.HomeConfig',
     'base.apps.BaseConfig'
 ]
 

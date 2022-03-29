@@ -71,12 +71,5 @@ def user_profile(request, pk):
     context = {'user': user}
     return render(request, 'base/profile.html', context)
 
-def chart(request):
-    s = Student.objects.all()
-    x = [i.email for i in s]
-    y = [y.id for y in s]
-    chart = get_chart(x,y)
-    return render(request, 'base/chart.html', {'chart':chart})
-
 def contact_us(request):
     return render(request, 'base/contactus.html')
