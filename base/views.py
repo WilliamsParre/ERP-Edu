@@ -13,7 +13,7 @@ from .models import Course, Student
 def home(request):
     courses = Course.objects.all()
     s = Student.objects.all()
-    return render(request, 'base/home.html')
+    return render(request, 'base/dashboard.html')
 
 
 def login_page(request):
@@ -44,6 +44,7 @@ def login_page(request):
     return render(request, 'base/login_register.html', context)
 
 
+@login_required(login_url='login')
 def logout_user(request):
     logout(request)
     return redirect('home')
@@ -66,7 +67,22 @@ def signup_page(request):
     return render(request, 'base/login_register.html', {'form': form})
 
 
+@login_required(login_url='login')
 def user_profile(request, pk):
     user = User.objects.get(id=pk)
     context = {'user': user}
     return render(request, 'base/profile.html', context)
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    return render(request, 'base/dashboard.html')
+
+
+@login_required(login_url='login', redirect_field_name='courses')
+def courses(request):
+    return render(request, 'base/courses.html')
+
+
+def attendance(request):
+    return render(request, 'base/attendance.html')

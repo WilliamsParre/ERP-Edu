@@ -1,24 +1,27 @@
 {% load static %}
 <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/sidebar.css' %}">
-<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 200px;min-height: 92.5vh;">
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="min-height: 90vh;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
     </a>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/'%} active {% endif %} " aria-current="page">
+            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/user/'%} active {% endif %} "
+                aria-current="page">
                 <i class='bx bxs-dashboard'></i>
                 Dashboard
             </a>
         </li>
         <li class="nav-item">
-            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/example'%} active {% endif %}" aria-current="page">
+            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/example'%} active {% endif %}"
+                aria-current="page">
                 <svg class="bi me-2" width="16" height="16"></svg>
                 Home
             </a>
         </li>
         <li class="nav-item">
-            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/example2'%} active {% endif %}" aria-current="page">
+            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/example2'%} active {% endif %}"
+                aria-current="page">
                 <svg class="bi me-2" width="16" height="16"></svg>
                 Home
             </a>
