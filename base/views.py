@@ -68,10 +68,10 @@ def signup_page(request):
 
 
 @login_required(login_url='login')
-def user_profile(request, pk):
-    user = User.objects.get(id=pk)
-    context = {'user': user}
-    return render(request, 'base/profile.html', context)
+def user_profile(request):
+    # user = User.objects.get(id=pk)
+    # context = {'user': user}
+    return render(request, 'base/profile.html')
 
 
 @login_required(login_url='login')
@@ -79,10 +79,30 @@ def dashboard(request):
     return render(request, 'base/dashboard.html')
 
 
-@login_required(login_url='login', redirect_field_name='courses')
+@login_required(login_url='login')
 def courses(request):
     return render(request, 'base/courses.html')
 
 
+@login_required(login_url='login')
 def attendance(request):
     return render(request, 'base/attendance.html')
+
+
+@login_required(login_url='login')
+def fees(request):
+    return render(request, 'base/fees.html')
+
+
+@login_required(login_url='login')
+def grades(request):
+    return render(request, 'base/grades.html')
+
+
+@login_required(login_url='login')
+def qualification(request):
+    return render(request, 'base/qualification.html')
+
+
+def settings(request):
+    return render(request, 'base/settings.html')

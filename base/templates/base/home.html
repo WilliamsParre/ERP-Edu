@@ -124,7 +124,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/user/'%} active {% endif %}" href="#">
+                            <a class="nav-link {% if request.path == '/user/fees/'%} active {% endif %}"
+                                href="{% url 'fees' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
                                     <path
@@ -136,7 +137,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/user/'%} active {% endif %}" href="#">
+                            <a class="nav-link {% if request.path == '/user/grades/' %} active {% endif %}"
+                                href="{% url 'grades' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     class="bi bi-mortarboard" viewBox="0 0 16 16">
                                     <path
@@ -148,7 +150,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/user/'%} active {% endif %}" href="#">
+                            <a class="nav-link {% if request.path == '/user/qualification/'%} active {% endif %}"
+                                href="{% url 'qualification' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     class="bi bi-award" viewBox="0 0 16 16">
                                     <path
@@ -159,7 +162,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/user/'%} active {% endif %}" href="#">
+                            <a class="nav-link {% if request.path == '/user/profile/'%} active {% endif %}"
+                                href="{% url 'profile' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     class="bi bi-person-lines-fill" viewBox="0 0 16 16">
                                     <path
@@ -169,7 +173,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/user/'%} active {% endif %}" href="#">
+                            <a class="nav-link {% if request.path == '/user/settings/'%} active {% endif %}"
+                                href="{% url 'settings' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
                                     <path
