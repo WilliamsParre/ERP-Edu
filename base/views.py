@@ -7,18 +7,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .models import Course, Student
-from .utils import get_chart
 
 
 @login_required(login_url='login')
 def home(request):
     courses = Course.objects.all()
     s = Student.objects.all()
-    x = [i.email for i in s]
-    y = [y.id for y in s]
-    chart = get_chart(x, y)
-    chart = {'chart': chart}
-    return render(request, 'base/home.html', chart)
+    return render(request, 'base/home.html')
 
 
 def login_page(request):
