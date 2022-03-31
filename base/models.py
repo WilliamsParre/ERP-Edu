@@ -1,9 +1,8 @@
-from distutils.command.upload import upload
-from pyexpat import model
-from turtle import mode, update
 from django.db import models
 
 # Create your models here.
+
+
 class Course(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
@@ -19,7 +18,8 @@ class Student(models.Model):
     last_name = models.CharField(max_length=200)
     u_id = models.BigIntegerField()
     email = models.EmailField()
-    gender = models.CharField(max_length=10, choices=[('Male','Male'), ('Female', 'Female'), ('Others', 'Others')])
+    gender = models.CharField(max_length=10, choices=[(
+        'Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')])
     profile_pic = models.ImageField(upload_to='base/templates/', blank=True)
     mobile = models.BigIntegerField()
     blood = models.CharField(max_length=5)
@@ -32,10 +32,3 @@ class Student(models.Model):
     weight = models.IntegerField()
     nationality = models.CharField(max_length=40)
     admission_date = models.DateField()
-
-
-
-
-
-    
-
