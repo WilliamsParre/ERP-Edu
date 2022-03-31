@@ -1,0 +1,7 @@
+.homepage {
+    margin: 0;
+    display: flex;
+    flex-wrap: row nowrap;
+    /* display: flex;
+    flex-direction: row; */
+}
