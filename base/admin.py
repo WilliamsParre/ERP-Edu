@@ -4,7 +4,9 @@ from django.contrib import admin
 
 from .models import Course, Student
 
-admin.site.site_header = 'ERP'
+admin.site.site_header = 'ERP - Admin'
+admin.site.site_title = 'ERP'
+admin.site.index_title = 'Welcome to ERP Administration'
 
 
 class CourseAdmin(admin.ModelAdmin):

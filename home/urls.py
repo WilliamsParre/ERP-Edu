@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import home, contact_us
+from .views import home
 urlpatterns = [
-    path('', home, name='index'),
-    path('contactus_post/', contact_us, name='contactus_post')
+    path('', home, name='index')
 ]
