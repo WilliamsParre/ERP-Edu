@@ -251,19 +251,29 @@
     </section><!-- End Team Section -->
 
     <div class="container" id="contactus">
-      <form action="" class="container" style="width: 40%;margin-top:10rem;margin-bottom: 10rem;">
-        <h2>Contact Us</h2>
-        <div class="mb-3">
-          <label for="Input1" class="form-label">Phone Number</label>
-          <input type="number" class="form-control" id="Input1" placeholder="9876543210">
+      <form action="{% url 'contactus_post' %}" method="post" class="container"
+        style="width: 40%;margin-top:10rem;margin-bottom: 10rem;">
+        {% csrf_token %}
+        <div class="section-title">
+          <h2>Contact Us</h2>
+          <p>Any questions? We would love to hear from you</p>
         </div>
         <div class="mb-3">
-          <label for="Input2" class="form-label">Phone Number</label>
-          <input type="email" class="form-control" id="Input2" placeholder="name@gmail.com">
+          <label for="first" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="first" name="first_name" placeholder="Enter your first name">
         </div>
         <div class="mb-3">
-          <label for="Textarea" class="form-label">Message </label>
-          <textarea class="form-control" id="Textarea" rows="6" placeholder="Enter your query here "></textarea>
+          <label for="last" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="last" name="last_name" placeholder="Enter your last name">
+        </div>
+        <div class="mb-3">
+          <label for="Input2" class="form-label">Email</label>
+          <input type="email" class="form-control" id="Input2" name="email" placeholder="Enter a valid email id">
+        </div>
+        <div class="mb-3">
+          <label for="Textarea" class="form-label">Message</label>
+          <textarea class="form-control" id="Textarea" rows="6" name="message"
+            placeholder="Enter your query .... "></textarea>
         </div>
         <input type="submit" class="btn btn-primary" value="Submit">
       </form>
