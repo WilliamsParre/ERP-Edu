@@ -1,6 +1,6 @@
 <div class="container-fluid bg-dark">
     <nav class="navbar navbar-expand-lg navbar-dark" style="justify-content:space-between">
-        <a class="navbar-brand" href="{% url 'home' %}">ERP</a>
+        <a class="navbar-brand" href="{% url 'home' %}"><strong>ERP</strong></a>
         {% if request.user.is_authenticated %}
         <form className="navbar-nav in-line mr-auto float-right">
             <div class="dropdown">
@@ -29,7 +29,15 @@
         </form>
         {% else %}
         <form className="navbar-nav in-line mr-auto float-right">
-            <a href="/user/login/admin" class="btn btn-outline-primary">Admin</a>
+            <a href="/admin" class="btn btn-outline-primary">Admin</a>
+            <a href="/" class="btn btn-outline-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-back"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                </svg>
+                Home
+            </a>
         </form>
         {% endif %}
     </nav>
