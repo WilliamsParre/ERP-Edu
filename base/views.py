@@ -1,11 +1,10 @@
-from cgitb import reset
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponse
+from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
+from .forms import signUpForm
 from .models import Course, Student
 
 
@@ -51,18 +50,22 @@ def logout_user(request):
 
 
 def signup_page(request):
-    form = UserCreationForm()
+    form = signUpForm()
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = signUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            user.is_active = False
+            lecturer = Group.objects.get(name='Lecturer')
             user.save()
-            login(request, user)
-            return redirect('home')
+            user.groups.add(lecturer)
+            user.save()
+            messages.success(
+                request, 'Registered successful! Request is send to your organisation for account activation.')
         else:
-            messages.error(request, 'An error occured during regestration')
+            messages.warning(request, 'An error occured during regestration')
 
     return render(request, 'base/login_register.html', {'form': form})
 
