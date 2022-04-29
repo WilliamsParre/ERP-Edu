@@ -6,8 +6,11 @@ from django.contrib.auth.models import User
 
 class Orginization(models.Model):
     orginization_name = models.CharField(max_length=200, unique=True)
-    owner_email = models.OneToOneField(
+    owner = models.OneToOneField(
         User, on_delete=models.CASCADE, unique=True)
+
+    def __str__(self):
+        return self.orginization_name
 
 
 class Course(models.Model):
@@ -48,7 +51,7 @@ class Lecturer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
-    u_id = models.BigIntegerField()
+    e_id = models.BigIntegerField()
     email = models.EmailField()
     gender = models.CharField(max_length=10, choices=[(
         'Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')])
