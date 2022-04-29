@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
 from .forms import signUpForm
@@ -90,6 +91,12 @@ def courses(request):
 @login_required(login_url='login')
 def attendance(request):
     return render(request, 'base/attendance.html')
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin', 'Lecturer'])
+def leave(request):
+    return render(request, 'base/leave.html')
 
 
 @login_required(login_url='login')

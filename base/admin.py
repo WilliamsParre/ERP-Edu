@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Course, Student
+from .models import Course, Student, Orginization
 
 admin.site.site_header = 'ERP - Admin'
 admin.site.site_title = 'ERP'
@@ -19,5 +19,6 @@ class StudentAdmin(admin.ModelAdmin):
                     'gender', 'email', 'mobile')
 
 
+admin.site.register(Orginization)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Student, StudentAdmin)
