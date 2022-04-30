@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% block content%}
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/login_register.css' %}">
+<div>
+    <div class="main">
+        <h2>Registration</h2>
+        <hr />
+        <p class="badge alert-success">Select user type</p>
+        <br />
+        <button class="btn btn-outline-danger" onclick="showDiv()">Orginization</button>
+        <button class="btn btn-outline-warning" onclick="showFacultyForm()">Faculty</button>
+        <button class="btn btn-outline-secondary">Non-Teaching</button>
+        <br />
+        <br />
+        <div id="orgnization" style="display:none;">
+            <form method="POST" action="{% url 'org_registration' %}">
+                {% csrf_token %}
+                <div class="container" style="width: 40%;">
+                    <h2>Orginization Registration</h2>
+                    <p style="color:orange;">Register your orginisation!</p>
+                    {% bootstrap_form org_form %}
+                    <input type="submit" class="btn btn-success" style="width: 100%;margin-top: 2rem;"
+                        value="Sign Up" />
+                </div>
+            </form>
+        </div>
+
+        <div id="faculty" style="display:none;">
+            <form method="POST" action="{% url 'faculty_registration' %}">
+                {% csrf_token %}
+                <div class="container" style="width: 40%;">
+                    <h2>Faculty Registration</h2>
+                    <p style="color:orange;">Register with your orginisation!</p>
+                    {% bootstrap_form faculty_form %}
+                    <input type="submit" class="btn btn-success" style="width: 100%;margin-top: 2rem;"
+                        value="Sign Up" />
+                </div>
+            </form>
+        </div>
+
+        <script>
+            function showDiv() {
+                document.getElementById('orgnization').style.display = "block";
+            }
+            function showFacultyForm() {
+                document.getElementById('faculty').style.display = "block";
+            }
+        </script>
+    </div>
+</div>
+{% endblock content %}
