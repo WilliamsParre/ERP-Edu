@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
-from .forms import signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm
+from .forms import signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm
 from .models import Course, Student
 
 
@@ -68,7 +68,8 @@ def signup_page(request):
                 request, 'Registered successful! Account created successfully!')
             org = OrginizationRegistrationForm()
             faculty = FacultyRegistriationForm()
-            return render(request, 'base/registration.html', {'org_form': org, 'faculty_form': faculty})
+            non_teaching = NonTeachingFacultyRegistriationForm()
+            return render(request, 'base/registration.html', {'org': org, 'faculty': faculty, 'non_teaching': non_teaching})
         else:
             messages.warning(request, 'An error occured during regestration')
 
@@ -78,7 +79,7 @@ def signup_page(request):
 def org_registration(request):
 
     if request.method == 'POST':
-        form = FacultyRegistriationForm(request.POST)
+        form = OrginizationRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(
@@ -92,7 +93,7 @@ def org_registration(request):
 def faculty_registration(request):
 
     if request.method == 'POST':
-        form = OrginizationRegistrationForm(request.POST)
+        form = FacultyRegistriationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(
@@ -102,6 +103,18 @@ def faculty_registration(request):
 
     return redirect('signup')
 
+def non_teaching_registration(request):
+    
+    if request.method == 'POST':
+        form = NonTeachingFacultyRegistriationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Registered successful! Message is sent to you orginisation for account activation.')
+        else:
+            messages.warning(request, 'An error occured during regestration')
+    
+    return redirect('signup')
 
 @login_required(login_url='login')
 def user_profile(request):

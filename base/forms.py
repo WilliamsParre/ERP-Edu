@@ -1,10 +1,8 @@
-from dataclasses import fields
-from re import U
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
-from .models import Orginization, Student, Lecturer
+from .models import Orginization, Student, Lecturer, NonTeaching
 
 
 class signUpForm(UserCreationForm):
@@ -34,4 +32,9 @@ class StudentRegistriationForm(ModelForm):
 class FacultyRegistriationForm(ModelForm):
     class Meta:
         model = Lecturer
+        fields = '__all__'
+
+class NonTeachingFacultyRegistriationForm(ModelForm):
+    class Meta:
+        model = NonTeaching
         fields = '__all__'
