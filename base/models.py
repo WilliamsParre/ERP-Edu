@@ -17,6 +17,9 @@ class Branch(models.Model):
     orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.name
+
 
 class Course(models.Model):
     orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
@@ -59,7 +62,7 @@ class Student(models.Model):
 class Lecturer(models.Model):
     orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
-        Branch, on_delete=models.CASCADE, unique=True)
+        Branch, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
