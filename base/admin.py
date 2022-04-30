@@ -20,21 +20,23 @@ class BranchAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('code', 'name', 'description','orginization',
                     'semester', 'year', 'created')
-
+    list_filter = ('year', 'semester')
 
 class LecturerAdmin(admin.ModelAdmin):
     list_display = ('e_id', 'first_name', 'last_name',
                     'gender', 'orginization', 'email', 'mobile')
+    list_filter = ('gender',)
 
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('u_id', 'first_name', 'last_name',
                     'gender', 'orginization', 'email', 'mobile')
+    list_filter = ('gender',)
     
 class NonTeachingAdmin(admin.ModelAdmin):
     list_display = ('nt_e_id', 'first_name', 'last_name',
                     'gender', 'orginization', 'email', 'mobile')
-    
+    list_filter = ('gender',)
 
 
 admin.site.register(Orginization, OrginisationAdmin)

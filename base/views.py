@@ -1,3 +1,4 @@
+from http.client import HTTPResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -6,7 +7,7 @@ from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
 from .forms import signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm
-from leave.forms import Leave, LeaveForm
+from leave.forms import Leave, LeaveForm, NonTeachingLeaveForm
 from .models import Course, Student
 
 
@@ -138,14 +139,21 @@ def attendance(request):
 
 
 @login_required(login_url='login')
-@allowed_user(roles=['admin', 'Lecturer'])
+@allowed_user(roles=['admin', 'Lecturer', 'non_teaching'])
 def leave(request):
-    form = LeaveForm()
+    if request.user.groups.all()[0].name == 'non_teaching':
+        form = NonTeachingLeaveForm()
+    else:
+        form = LeaveForm()
     
     if request.method == "POST":
-        form = LeaveForm(request.POST)
+        if request.user.groups.all()[0].name == 'non_teaching':
+            form = NonTeachingLeaveForm(request.POST)
+        else:
+            form = LeaveForm(request.POST)
         if form.is_valid():
             form.save()
+            form = LeaveForm()
             messages.success(
                 request, 'Leave has been applied successfully! Message is sent to you orginisation for leave approval.')
         else:
@@ -171,3 +179,9 @@ def qualification(request):
 
 def settings(request):
     return render(request, 'base/settings.html')
+
+def accept(request):
+    
+    print(Leave.objects.get().all()[0].name)
+    
+    return
