@@ -6,13 +6,12 @@ from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
 from .forms import signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm
+from leave.forms import Leave, LeaveForm
 from .models import Course, Student
 
 
 @login_required(login_url='login')
 def home(request):
-    courses = Course.objects.all()
-    s = Student.objects.all()
     return render(request, 'base/dashboard.html')
 
 
@@ -71,7 +70,7 @@ def signup_page(request):
             non_teaching = NonTeachingFacultyRegistriationForm()
             return render(request, 'base/registration.html', {'org': org, 'faculty': faculty, 'non_teaching': non_teaching})
         else:
-            messages.warning(request, 'An error occured during regestration')
+            messages.error(request, 'An error occured during regestration')
 
     return render(request, 'base/login_register.html', {'form': form})
 
@@ -85,7 +84,7 @@ def org_registration(request):
             messages.success(
                 request, 'Registered successful! Orginization added successfully.')
         else:
-            messages.warning(request, 'An error occured during regestration')
+            messages.error(request, 'An error occured during regestration')
 
     return redirect('signup')
 
@@ -99,7 +98,7 @@ def faculty_registration(request):
             messages.success(
                 request, 'Registered successful! Message is sent to you orginisation for account activation.')
         else:
-            messages.warning(request, 'An error occured during regestration')
+            messages.error(request, 'An error occured during regestration')
 
     return redirect('signup')
 
@@ -112,7 +111,7 @@ def non_teaching_registration(request):
             messages.success(
                 request, 'Registered successful! Message is sent to you orginisation for account activation.')
         else:
-            messages.warning(request, 'An error occured during regestration')
+            messages.error(request, 'An error occured during regestration')
     
     return redirect('signup')
 
@@ -141,7 +140,18 @@ def attendance(request):
 @login_required(login_url='login')
 @allowed_user(roles=['admin', 'Lecturer'])
 def leave(request):
-    return render(request, 'base/leave.html')
+    form = LeaveForm()
+    
+    if request.method == "POST":
+        form = LeaveForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Leave has been applied successfully! Message is sent to you orginisation for leave approval.')
+        else:
+            messages.error(request, 'An error occured during leave processing.')
+            
+    return render(request, 'base/leave.html', {'form': form})
 
 
 @login_required(login_url='login')

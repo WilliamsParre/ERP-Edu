@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'bootstrap3',
 
     'home.apps.HomeConfig',
-    'base.apps.BaseConfig'
+    'base.apps.BaseConfig',
+    'leave.apps.LeaveConfig'
 ]
 
 MIDDLEWARE = [

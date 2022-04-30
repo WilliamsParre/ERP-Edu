@@ -34,6 +34,7 @@ class StudentAdmin(admin.ModelAdmin):
 class NonTeachingAdmin(admin.ModelAdmin):
     list_display = ('nt_e_id', 'first_name', 'last_name',
                     'gender', 'orginization', 'email', 'mobile')
+    
 
 
 admin.site.register(Orginization, OrginisationAdmin)

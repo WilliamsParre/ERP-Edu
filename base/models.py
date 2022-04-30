@@ -1,3 +1,4 @@
+from urllib import request
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -32,6 +33,9 @@ class Course(models.Model):
     year = models.IntegerField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
 
 
 class Student(models.Model):
@@ -57,6 +61,9 @@ class Student(models.Model):
     weight = models.IntegerField()
     nationality = models.CharField(max_length=40)
     admission_date = models.DateField()
+    
+    def __str__(self):
+        return self.first_name+' '+self.last_name
 
 
 class Lecturer(models.Model):
@@ -82,6 +89,9 @@ class Lecturer(models.Model):
     weight = models.IntegerField()
     nationality = models.CharField(max_length=40)
     admission_date = models.DateField()
+    
+    def __str__(self):
+        return self.first_name+' '+self.last_name
 
 class NonTeaching(models.Model):
     orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
@@ -104,3 +114,7 @@ class NonTeaching(models.Model):
     weight = models.IntegerField()
     nationality = models.CharField(max_length=40)
     admission_date = models.DateField()
+    
+    def __str__(self):
+        return self.first_name+' '+self.last_name
+    
