@@ -66,7 +66,7 @@
   </header><!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex align-items-center">
+  <!-- <section id="hero" class="d-flex align-items-center">
 
     <div class="container">
       <div class="row">
@@ -83,7 +83,14 @@
       </div>
     </div>
 
-  </section><!-- End Hero -->
+  </section>End Hero -->
+  <div>
+    <img src='{% static "assets/img/Office.jpg"%}' width="100%" />
+    <h1 style="position: absolute;top: 15rem;left: 50px;color: white;font-size:50px;">Where Orginisations Plan</h1>
+    <a class="btn btn-outline-light" href="{% url 'signup' %}" style="position: absolute;top: 20rem;left: 50px;">Get
+      Started</a>
+  </div>
+
 
   <main id="main">
     {% for message in messages %}

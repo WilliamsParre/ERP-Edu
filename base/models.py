@@ -1,7 +1,8 @@
-from urllib import request
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.db.models import F
 # Create your models here.
 
 
@@ -9,19 +10,20 @@ class Orginization(models.Model):
     orginization_name = models.CharField(max_length=200, unique=True)
     owner = models.OneToOneField(
         User, on_delete=models.CASCADE, unique=True)
-
+    email = models.EmailField(unique=True)
+    
     def __str__(self):
         return self.orginization_name
 
 
 class Branch(models.Model):
-    orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
+    orginization = models.OneToOneField(Orginization, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
-
-
+        return self.name+' ---> '+str(self.orginization)
+        
+        
 class Course(models.Model):
     orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
@@ -34,12 +36,20 @@ class Course(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
+    def save(self, *args, **kwargs):
+        x = str(self.branch).split('--->')
+        x = x[1].strip()
+        print(x)
+        print(x == str(self.orginization))
+        if x == str(self.orginization):
+            super(Course, self).save(*args, **kwargs)
+        
     def __str__(self):
         return self.name
 
 
 class Student(models.Model):
-    orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
+    orginization = models.OneToOneField(Orginization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
         Branch, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

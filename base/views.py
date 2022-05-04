@@ -1,4 +1,3 @@
-from http.client import HTTPResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -6,9 +5,9 @@ from django.contrib.auth.decorators import login_required
 from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
-from .forms import signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm
+from .forms import StudentRegistriationForm, signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm, UserProfileChangeForm
 from leave.forms import Leave, LeaveForm, NonTeachingLeaveForm
-from .models import Course, Student
+from base.models import Course, Lecturer, NonTeaching, Student
 
 
 @login_required(login_url='login')
@@ -117,10 +116,25 @@ def non_teaching_registration(request):
     return redirect('signup')
 
 @login_required(login_url='login')
-def user_profile(request):
+def user_profile(request, pk):
     # user = User.objects.get(id=pk)
-    # context = {'user': user}
-    return render(request, 'base/profile.html')
+    user = User.objects.get(id=pk)
+    group = user.groups.all()[0].name
+    print(group)
+    profile = ''
+    if group == 'admin':
+        print('Hi you are admin')
+    elif group == 'lecturer':
+        if Lecturer.objects.all().count() > 0:
+            profile = Lecturer.objects.get(user=user.id)
+    elif group == 'student':
+        # profile = User.objects.filter(student__first_name=user.first_name)
+        if Student.objects.all().count() > 0:
+            profile = Student.objects.get(user=user.id)
+    elif group == 'non_teaching':
+        profile = NonTeaching.objects.get(user=user.id)
+    context = {'user': user, 'profile': profile}
+    return render(request, 'base/profile.html', context)
 
 
 @login_required(login_url='login')
@@ -139,7 +153,7 @@ def attendance(request):
 
 
 @login_required(login_url='login')
-@allowed_user(roles=['admin', 'Lecturer', 'non_teaching'])
+@allowed_user(roles=['admin', 'lecturer', 'non_teaching'])
 def leave(request):
     if request.user.groups.all()[0].name == 'non_teaching':
         form = NonTeachingLeaveForm()
@@ -176,7 +190,7 @@ def grades(request):
 def qualification(request):
     return render(request, 'base/qualification.html')
 
-
+@login_required(login_url='login')
 def settings(request):
     return render(request, 'base/settings.html')
 
@@ -185,3 +199,64 @@ def accept(request):
     print(Leave.objects.get().all()[0].name)
     
     return
+
+@login_required(login_url='login')
+def update_user_profile(request):
+    
+    form = UserProfileChangeForm(instance=request.user)
+    
+    if request.method == "POST":
+        form = UserProfileChangeForm(request.POST, instance = request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return user_profile(request, pk=request.user.id)
+        else:
+            messages.error(request, 'Error occured during form processing.')
+            
+    return render(request, 'base/update_user_prof.html', {'form': form })
+
+@login_required(login_url='login')
+def update_org_profile(request):
+    pk = request.user.id
+    user = User.objects.get(id=pk)
+    group = user.groups.all()[0].name
+    print(request.method)
+    if request.method == "POST": 
+        if group == 'lecturer':
+            form = FacultyRegistriationForm(request.POST, instance=Lecturer.objects.get(user=user.id))
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Organization Profile updated successfully!')
+                return user_profile(request, pk=request.user.id)
+            else:
+                messages.error(request, 'Error occured during form processing.')
+                
+        elif group == 'student':
+            form = StudentRegistriationForm(request.POST, instance=Student.objects.get(user=user.id))
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Organization Profile updated successfully!')
+                return user_profile(request, pk=request.user.id)
+            else:
+                messages.error(request, 'Error occured during form processing.')
+        elif group == 'non_teaching':
+            form = NonTeachingFacultyRegistriationForm(request.POST, instance=NonTeaching.objects.get(user=user.id))
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Organization Profile updated successfully!')
+                return user_profile(request, pk=request.user.id)
+            else:
+                messages.error(request, 'Error occured during form processing.')
+    else:
+        profile = ''
+        if group == 'admin':
+            print('Hi you are admin')
+        elif group == 'lecturer':
+            form = FacultyRegistriationForm(instance=Lecturer.objects.get(user=user.id))
+        elif group == 'student':
+            form = StudentRegistriationForm(instance=Student.objects.get(user=user.id))
+        elif group == 'non_teaching':
+            form = NonTeachingFacultyRegistriationForm(instance=NonTeaching.objects.get(user=user.id))
+        
+        return render(request, 'base/org_profile_update.html', {'form': form })

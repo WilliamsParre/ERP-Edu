@@ -5,8 +5,10 @@ class LeaveForm(ModelForm):
     class Meta:
         model = Leave
         fields = '__all__'
+        exclude = ('leave_Status',)
 
 class NonTeachingLeaveForm(ModelForm):
     class Meta:
         model = NonTeachingLeave
         fields = '__all__'
+        exclude = ('leave_Status',)
