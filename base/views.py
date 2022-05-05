@@ -172,6 +172,8 @@ def courses(request):
 def attendance(request):
     return render(request, 'base/attendance.html')
 
+@login_required(login_url='login')
+@allowed_user(roles=['lecturer', 'non_teaching'])
 def leave(request):
     no_of_leaves = 0
     if request.user.groups.all()[0].name == 'non_teaching':
@@ -288,7 +290,6 @@ def update_org_profile(request):
             else:
                 messages.error(request, 'Error occured during form processing.')
     else:
-        profile = ''
         if group == 'admin':
             messages.error(request, 'Sorry you dont have access! Because you are the admin')
             return user_profile(request, pk=request.user.id)
