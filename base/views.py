@@ -56,13 +56,8 @@ def signup_page(request):
         form = signUpForm(request.POST)
         form2 = OrginizationRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.is_active = False
-            lecturer = Group.objects.get(name='lecturer')
-            user.save()
-            user.groups.add(lecturer)
-            user.save()
+            user = form.save()
+            login(request, user)
             messages.success(
                 request, 'Registered successful! Account created successfully!')
             org = OrginizationRegistrationForm()
@@ -81,6 +76,15 @@ def org_registration(request):
         form = OrginizationRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
+            user = User.objects.get(username=request.user.username)
+            user.username = user.username.lower()
+            user.is_active = True
+            # user.is_staff = True
+            admin = Group.objects.get(name='admin')
+            user.save()
+            user.groups.add(admin)
+            user.save()
+            logout(request)
             messages.success(
                 request, 'Registered successful! Orginization added successfully.')
         else:
@@ -95,6 +99,14 @@ def faculty_registration(request):
         form = FacultyRegistriationForm(request.POST)
         if form.is_valid():
             form.save()
+            user = User.objects.get(username=request.user.username)
+            user.username = user.username.lower()
+            user.is_active = False
+            lecturer = Group.objects.get(name='lecturer')
+            user.save()
+            user.groups.add(lecturer)
+            user.save()
+            logout(request)
             messages.success(
                 request, 'Registered successful! Message is sent to you orginisation for account activation.')
         else:
@@ -108,6 +120,14 @@ def non_teaching_registration(request):
         form = NonTeachingFacultyRegistriationForm(request.POST)
         if form.is_valid():
             form.save()
+            user = User.objects.get(username=request.user.username)
+            user.username = user.username.lower()
+            user.is_active = False
+            non_teaching = Group.objects.get(name='non_teaching')
+            user.save()
+            user.groups.add(non_teaching)
+            user.save()
+            logout(request)
             messages.success(
                 request, 'Registered successful! Message is sent to you orginisation for account activation.')
         else:
@@ -251,7 +271,8 @@ def update_org_profile(request):
     else:
         profile = ''
         if group == 'admin':
-            print('Hi you are admin')
+            messages.error(request, 'Sorry you dont have access! Because you are the admin')
+            return user_profile(request, pk=request.user.id)
         elif group == 'lecturer':
             form = FacultyRegistriationForm(instance=Lecturer.objects.get(user=user.id))
         elif group == 'student':
