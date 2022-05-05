@@ -6,7 +6,7 @@ from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
 from .forms import StudentRegistriationForm, signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm, UserProfileChangeForm
-from leave.forms import Leave, LeaveForm, NonTeachingLeaveForm
+from leave.forms import Leave, NonTeachingLeave, LeaveForm, NonTeachingLeaveForm
 from base.models import Course, Lecturer, NonTeaching, Student
 
 
@@ -171,10 +171,27 @@ def courses(request):
 def attendance(request):
     return render(request, 'base/attendance.html')
 
+def leave(request):
+    no_of_leaves = 0
+    if request.user.groups.all()[0].name == 'non_teaching':
+        user = NonTeaching.objects.get(user=request.user.id)
+        leaves = NonTeachingLeave.objects.filter(e_id=user.nt_e_id)
+        total_leaves = NonTeachingLeave.objects.filter(e_id=user.nt_e_id).count()
+        no_of_leaves_granted = NonTeachingLeave.objects.filter(e_id=user.nt_e_id, leave_Status='Approved').count()
+        no_of_leaves_pending = NonTeachingLeave.objects.filter(e_id=user.nt_e_id, leave_Status='Pending').count()
+        no_of_leaves_declined = NonTeachingLeave.objects.filter(e_id=user.nt_e_id, leave_Status='Declined').count()
+    else:
+        user = Lecturer.objects.get(user=request.user.id)
+        leaves = Leave.objects.filter(e_id=user.e_id)
+        total_leaves = Leave.objects.filter(e_id=user.e_id).count()
+        no_of_leaves_granted = Leave.objects.filter(e_id=user.e_id, leave_Status='Approved').count()
+        no_of_leaves_pending = Leave.objects.filter(e_id=user.e_id, leave_Status='Pending').count()
+        no_of_leaves_declined = Leave.objects.filter(e_id=user.e_id, leave_Status='Declined').count()
+    return render(request, 'base/leave.html', {'leaves': leaves, 'total_leaves': total_leaves, 'no_of_leaves_granted': no_of_leaves_granted, 'no_of_leaves_pending': no_of_leaves_pending, 'no_of_leaves_declined': no_of_leaves_declined})
 
 @login_required(login_url='login')
-@allowed_user(roles=['admin', 'lecturer', 'non_teaching'])
-def leave(request):
+@allowed_user(roles=['lecturer', 'non_teaching'])
+def apply_leave(request):
     if request.user.groups.all()[0].name == 'non_teaching':
         form = NonTeachingLeaveForm()
     else:
@@ -193,7 +210,7 @@ def leave(request):
         else:
             messages.error(request, 'An error occured during leave processing.')
             
-    return render(request, 'base/leave.html', {'form': form})
+    return render(request, 'base/apply_leave.html', {'form': form})
 
 
 @login_required(login_url='login')

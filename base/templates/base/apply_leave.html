@@ -1,0 +1,14 @@
+{% extends 'base/home.html' %}
+{% load bootstrap3 %}
+{% block content %}
+<div>
+    <form method="POST" action="{% url 'apply_leave' %}">
+        {% csrf_token %}
+        <div class="container" style="width: 50%;">
+            <h2 style="color:steelblue;margin-bottom:3rem;text-align:center;">Apply for Leave</h2>
+            {% bootstrap_form form %}
+            <input type="submit" class="btn btn-info" style="width: 100%;margin-top: 2rem;" value="Submit" />
+        </div>
+    </form>
+</div>
+{% endblock %}
