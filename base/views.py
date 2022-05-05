@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .decorators import allowed_user
@@ -229,7 +230,8 @@ def qualification(request):
 
 @login_required(login_url='login')
 def settings(request):
-    return render(request, 'base/settings.html')
+    form = PasswordChangeForm(user=request.user)
+    return render(request, 'base/settings.html', {'form': form})
 
 def accept(request):
     

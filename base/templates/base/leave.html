@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row mb-5">
             <div class="col-sm">
-                <div class="card bg-secondary text-white">
+                <div class="card bg-secondary text-white mt-2">
                     <h5 class="card-header" style="text-align:center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-journals" viewBox="0 2 20 16">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="col-sm">
-                <div class="card bg-success text-white">
+                <div class="card bg-success text-white mt-2">
                     <h5 class="card-header" style="text-align:center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-award-fill" viewBox="0 0 18 18">
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-sm">
-                <div class="card bg-warning text-white">
+                <div class="card bg-warning text-white mt-2">
                     <h5 class="card-header" style="text-align:center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-hourglass-split" viewBox="0 2 18 16">
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="col-sm">
-                <div class="card bg-danger text-white">
+                <div class="card bg-danger text-white mt-2">
                     <h5 class="card-header" style="text-align:center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-exclamation-triangle-fill" viewBox="0 2 18 16">
@@ -67,30 +67,32 @@
         <div>
             <a class="btn btn-outline-primary mb-5" href="{% url 'apply_leave' %}">Apply Leave</a>
         </div>
-        <table class="table  table-dark table-striped table-bordered table-hover rounded">
-            <thead class="thead-light text-white">
-                <tr>
-                    <th scope="col">E_Id</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Leave Type</th>
-                    <th scope="col">Requested Days</th>
-                    <th scope="col">Leave Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for leave in leaves%}
-                <tr>
-                    <td>{{leave.e_id}}</td>
-                    <td>{{leave.first_name}}</td>
-                    <td>{{leave.last_name}}</td>
-                    <td>{{leave.leave_type}}</td>
-                    <td>{{leave.requested_days}}</td>
-                    <td>{{leave.leave_Status}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="col">
+            <table class="table  table-dark table-striped table-bordered table-hover rounded">
+                <thead class="thead-light text-white">
+                    <tr>
+                        <th scope="col">E_Id</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Leave Type</th>
+                        <th scope="col">Requested Days</th>
+                        <th scope="col">Leave Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leave in leaves%}
+                    <tr>
+                        <td>{{leave.e_id}}</td>
+                        <td>{{leave.first_name}}</td>
+                        <td>{{leave.last_name}}</td>
+                        <td>{{leave.leave_type}}</td>
+                        <td>{{leave.requested_days}}</td>
+                        <td>{{leave.leave_Status}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -8,9 +8,9 @@
     <div class="main">
         <form method="post" action="">
             {% csrf_token %}
-            <div class="container form"
-                style="border: 2.5px solid steelblue;justify-content: center;width: 30%;box-shadow: 8px 10px 3px #888888;">
-                <h2>Login</h2>
+            <div class="container col-lg-4 col-sm-12 p-4"
+                style="border: 2.5px solid steelblue;justify-content: center;box-shadow: 8px 10px 3px #888888;border-radius:18px;">
+                <h2 style="text-align:center;padding:1rem;">Login</h2>
                 <form>
                     <div class="input-group mb-2 f1">
                         <div class="input-group-prepend">
@@ -54,7 +54,7 @@
     <div class="main">
         <form method="POST" action="">
             {% csrf_token %}
-            <div class="container" style="width: 50%;">
+            <div class="container col-lg-5 col-sm-12">
                 <h2>Register</h2>
                 {% bootstrap_form form %}
                 <input type="submit" class="btn btn-success" style="width: 100%;margin-top: 2rem;" value="Sign Up" />

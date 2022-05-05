@@ -17,7 +17,7 @@
         <div id="orgnization" style="display:none;">
             <form method="POST" action="{% url 'org_registration' %}">
                 {% csrf_token %}
-                <div class="container" style="width: 40%;">
+                <div class="container col-lg-5 col-sm-12">
                     <h2>Orginization Registration</h2>
                     <p style="color:orange;">Register your orginisation!</p>
                     {% bootstrap_form org %}
@@ -30,7 +30,7 @@
         <div id="faculty" style="display:none;">
             <form method="POST" action="{% url 'faculty_registration' %}">
                 {% csrf_token %}
-                <div class="container" style="width: 40%;">
+                <div class="container col-lg-5 col-sm-12">
                     <h2>Faculty Registration</h2>
                     <p style="color:orange;">Register with your orginisation!</p>
                     {% bootstrap_form faculty %}
@@ -43,7 +43,7 @@
         <div id="non_teaching" style="display:none;">
             <form method="POST" action="{% url 'non_teaching_registration' %}">
                 {% csrf_token %}
-                <div class="container" style="width: 40%;">
+                <div class="container col-lg-5 col-sm-12">
                     <h2>Non-Teaching Staff Registration</h2>
                     <p style="color:orange;">Register with your orginisation!</p>
                     {% bootstrap_form non_teaching %}
