@@ -59,7 +59,7 @@ def signup_page(request):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.is_active = False
-            lecturer = Group.objects.get(name='Lecturer')
+            lecturer = Group.objects.get(name='lecturer')
             user.save()
             user.groups.add(lecturer)
             user.save()
