@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from os import getenv
-from pickle import TRUE
+from django.contrib import messages
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -167,3 +167,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'williamsparre2002@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('email_pass')
 # EMAIL_USE_SSL = True
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
