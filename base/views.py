@@ -1,3 +1,4 @@
+import re
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
@@ -8,7 +9,8 @@ from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
 from .forms import StudentRegistriationForm, signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm, UserProfileChangeForm
 from leave.forms import Leave, NonTeachingLeave, LeaveForm, NonTeachingLeaveForm
-from base.models import Course, Lecturer, NonTeaching, Student
+from base.models import Course, Lecturer, NonTeaching, Orginization, Student
+from django.contrib.auth import update_session_auth_hash
 
 
 @login_required(login_url='login')
@@ -115,8 +117,9 @@ def faculty_registration(request):
 
     return redirect('signup')
 
+
 def non_teaching_registration(request):
-    
+
     if request.method == 'POST':
         form = NonTeachingFacultyRegistriationForm(request.POST)
         if form.is_valid():
@@ -133,8 +136,9 @@ def non_teaching_registration(request):
                 request, 'Registered successful! Message is sent to you orginisation for account activation.')
         else:
             messages.error(request, 'An error occured during regestration')
-    
+
     return redirect('signup')
+
 
 @login_required(login_url='login')
 def user_profile(request, pk):
@@ -172,6 +176,7 @@ def courses(request):
 def attendance(request):
     return render(request, 'base/attendance.html')
 
+
 @login_required(login_url='login')
 @allowed_user(roles=['lecturer', 'non_teaching'])
 def leave(request):
@@ -179,18 +184,26 @@ def leave(request):
     if request.user.groups.all()[0].name == 'non_teaching':
         user = NonTeaching.objects.get(user=request.user.id)
         leaves = NonTeachingLeave.objects.filter(e_id=user.nt_e_id)
-        total_leaves = NonTeachingLeave.objects.filter(e_id=user.nt_e_id).count()
-        no_of_leaves_granted = NonTeachingLeave.objects.filter(e_id=user.nt_e_id, leave_Status='Approved').count()
-        no_of_leaves_pending = NonTeachingLeave.objects.filter(e_id=user.nt_e_id, leave_Status='Pending').count()
-        no_of_leaves_declined = NonTeachingLeave.objects.filter(e_id=user.nt_e_id, leave_Status='Declined').count()
+        total_leaves = NonTeachingLeave.objects.filter(
+            e_id=user.nt_e_id).count()
+        no_of_leaves_granted = NonTeachingLeave.objects.filter(
+            e_id=user.nt_e_id, leave_Status='Approved').count()
+        no_of_leaves_pending = NonTeachingLeave.objects.filter(
+            e_id=user.nt_e_id, leave_Status='Pending').count()
+        no_of_leaves_declined = NonTeachingLeave.objects.filter(
+            e_id=user.nt_e_id, leave_Status='Declined').count()
     else:
         user = Lecturer.objects.get(user=request.user.id)
         leaves = Leave.objects.filter(e_id=user.e_id)
         total_leaves = Leave.objects.filter(e_id=user.e_id).count()
-        no_of_leaves_granted = Leave.objects.filter(e_id=user.e_id, leave_Status='Approved').count()
-        no_of_leaves_pending = Leave.objects.filter(e_id=user.e_id, leave_Status='Pending').count()
-        no_of_leaves_declined = Leave.objects.filter(e_id=user.e_id, leave_Status='Declined').count()
+        no_of_leaves_granted = Leave.objects.filter(
+            e_id=user.e_id, leave_Status='Approved').count()
+        no_of_leaves_pending = Leave.objects.filter(
+            e_id=user.e_id, leave_Status='Pending').count()
+        no_of_leaves_declined = Leave.objects.filter(
+            e_id=user.e_id, leave_Status='Declined').count()
     return render(request, 'base/leave.html', {'leaves': leaves, 'total_leaves': total_leaves, 'no_of_leaves_granted': no_of_leaves_granted, 'no_of_leaves_pending': no_of_leaves_pending, 'no_of_leaves_declined': no_of_leaves_declined})
+
 
 @login_required(login_url='login')
 @allowed_user(roles=['lecturer', 'non_teaching'])
@@ -199,7 +212,7 @@ def apply_leave(request):
         form = NonTeachingLeaveForm()
     else:
         form = LeaveForm()
-    
+
     if request.method == "POST":
         if request.user.groups.all()[0].name == 'non_teaching':
             form = NonTeachingLeaveForm(request.POST)
@@ -211,8 +224,9 @@ def apply_leave(request):
             messages.success(
                 request, 'Leave has been applied successfully! Message is sent to you orginisation for leave approval.')
         else:
-            messages.error(request, 'An error occured during leave processing.')
-            
+            messages.error(
+                request, 'An error occured during leave processing.')
+
     return render(request, 'base/apply_leave.html', {'form': form})
 
 
@@ -230,74 +244,153 @@ def grades(request):
 def qualification(request):
     return render(request, 'base/qualification.html')
 
+
 @login_required(login_url='login')
 def settings(request):
     form = PasswordChangeForm(user=request.user)
+
+    if request.method == "POST":
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, 'Passord changed successfully!')
+            form = PasswordChangeForm(user=request.user)
+            return render(request, 'base/settings.html', {'form': form})
+        else:
+            messages.error(request, 'Error occured during form validation.')
+
     return render(request, 'base/settings.html', {'form': form})
 
+
 def accept(request):
-    
+
     print(Leave.objects.get().all()[0].name)
-    
+
     return
+
 
 @login_required(login_url='login')
 def update_user_profile(request):
-    
+
     form = UserProfileChangeForm(instance=request.user)
-    
+
     if request.method == "POST":
-        form = UserProfileChangeForm(request.POST, instance = request.user)
+        form = UserProfileChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
             return user_profile(request, pk=request.user.id)
         else:
             messages.error(request, 'Error occured during form processing.')
-            
-    return render(request, 'base/update_user_prof.html', {'form': form })
+
+    return render(request, 'base/update_user_prof.html', {'form': form})
+
 
 @login_required(login_url='login')
+@allowed_user(roles=['student', 'lecturer', 'non_teaching'])
 def update_org_profile(request):
     pk = request.user.id
     user = User.objects.get(id=pk)
     group = user.groups.all()[0].name
-    print(request.method)
-    if request.method == "POST": 
+    if request.method == "POST":
         if group == 'lecturer':
-            form = FacultyRegistriationForm(request.POST, instance=Lecturer.objects.get(user=user.id))
+            form = FacultyRegistriationForm(
+                request.POST, instance=Lecturer.objects.get(user=user.id))
             if form.is_valid():
                 form.save()
-                messages.success(request, 'Organization Profile updated successfully!')
+                messages.success(
+                    request, 'Organization Profile updated successfully!')
                 return user_profile(request, pk=request.user.id)
             else:
-                messages.error(request, 'Error occured during form processing.')
-                
+                messages.error(
+                    request, 'Error occured during form processing.')
+
         elif group == 'student':
-            form = StudentRegistriationForm(request.POST, instance=Student.objects.get(user=user.id))
+            form = StudentRegistriationForm(
+                request.POST, instance=Student.objects.get(user=user.id))
             if form.is_valid():
                 form.save()
-                messages.success(request, 'Organization Profile updated successfully!')
+                messages.success(
+                    request, 'Organization Profile updated successfully!')
                 return user_profile(request, pk=request.user.id)
             else:
-                messages.error(request, 'Error occured during form processing.')
+                messages.error(
+                    request, 'Error occured during form processing.')
         elif group == 'non_teaching':
-            form = NonTeachingFacultyRegistriationForm(request.POST, instance=NonTeaching.objects.get(user=user.id))
+            form = NonTeachingFacultyRegistriationForm(
+                request.POST, instance=NonTeaching.objects.get(user=user.id))
             if form.is_valid():
                 form.save()
-                messages.success(request, 'Organization Profile updated successfully!')
+                messages.success(
+                    request, 'Organization Profile updated successfully!')
                 return user_profile(request, pk=request.user.id)
             else:
-                messages.error(request, 'Error occured during form processing.')
+                messages.error(
+                    request, 'Error occured during form processing.')
     else:
-        if group == 'admin':
-            messages.error(request, 'Sorry you dont have access! Because you are the admin')
-            return user_profile(request, pk=request.user.id)
-        elif group == 'lecturer':
-            form = FacultyRegistriationForm(instance=Lecturer.objects.get(user=user.id))
+        if group == 'lecturer':
+            form = FacultyRegistriationForm(
+                instance=Lecturer.objects.get(user=user.id))
         elif group == 'student':
-            form = StudentRegistriationForm(instance=Student.objects.get(user=user.id))
+            form = StudentRegistriationForm(
+                instance=Student.objects.get(user=user.id))
         elif group == 'non_teaching':
-            form = NonTeachingFacultyRegistriationForm(instance=NonTeaching.objects.get(user=user.id))
-        
-        return render(request, 'base/org_profile_update.html', {'form': form })
+            form = NonTeachingFacultyRegistriationForm(
+                instance=NonTeaching.objects.get(user=user.id))
+
+        return render(request, 'base/org_profile_update.html', {'form': form})
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def admin_leave(request):
+    org = Orginization.objects.get(owner=request.user)
+    faculty = Lecturer.objects.filter(orginization=org)
+    Leave.objects.filter()
+    teaching_list = []
+    for i in faculty:
+        teaching_list.append(Leave.objects.filter(e_id=i.id))
+    non_teaching = NonTeaching.objects.filter(orginization=org)
+    non_teaching_list = []
+    for i in non_teaching:
+        non_teaching_list.append(NonTeachingLeave.objects.filter(e_id=i.id))
+
+    no_of_teaching_leaves = 0
+    no_of_non_teaching_leaves = 0
+
+    no_of_leaves_granted = 0
+    no_of_leaves_pending = 0
+    no_of_leaves_declined = 0
+
+    for i in teaching_list:
+        for j in i:
+            if j.leave_Status == 'Pending':
+                no_of_leaves_pending += 1
+            elif j.leave_Status == 'Approved':
+                no_of_leaves_granted += 1
+            elif j.leaves_Status == 'Declined':
+                no_of_leaves_declined += 1
+            no_of_teaching_leaves += 1
+
+    for i in non_teaching_list:
+        for j in i:
+            if j.leave_Status == 'Pending':
+                no_of_leaves_pending += 1
+            elif j.leave_Status == 'Approved':
+                no_of_leaves_granted += 1
+            elif j.leaves_Status == 'Declined':
+                no_of_leaves_declined += 1
+
+            no_of_non_teaching_leaves += 1
+
+    total_leaves = no_of_teaching_leaves + no_of_non_teaching_leaves
+    return render(request, 'base/admin_leave.html', {'teaching_list': teaching_list,
+                                                     'non_teaching_list': non_teaching_list,
+                                                     'no_of_teaching_leaves': no_of_teaching_leaves,
+                                                     'no_of_non_teaching_leaves': no_of_non_teaching_leaves,
+                                                     'total_leaves': total_leaves,
+                                                     'no_of_leaves_granted': no_of_leaves_granted,
+                                                     'no_of_leaves_pending': no_of_leaves_pending,
+                                                     'no_of_leaves_declined': no_of_leaves_declined
+                                                     })
