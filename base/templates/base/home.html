@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load base_extras.py %}
 
 <head>
     <meta charset="UTF-8">
@@ -123,6 +124,7 @@
                                 <span class="ml-2">Attendance</span>
                             </a>
                         </li>
+                        {% if not request.user|has_group:"admin" %}
                         <li class="nav-item">
                             <a class="nav-link {% if request.path == '/user/leave/'%} active {% endif %}"
                                 href="{% url 'leave' %}">
@@ -136,6 +138,7 @@
                                 <span class="ml-2">Leave</span>
                             </a>
                         </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link {% if request.path == '/user/fees/'%} active {% endif %}"
                                 href="{% url 'fees' %}">
