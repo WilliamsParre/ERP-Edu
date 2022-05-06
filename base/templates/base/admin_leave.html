@@ -65,8 +65,8 @@
         </div>
         <button class="btn btn-outline-primary mb-4" onclick="showDiv()">More info</button>
         <div class="col-lg-4 col-sm-12" id="moredata" style="display:none;">
-            <table class="table table-dark table-striped table-bordered table-hover">
-                <thead>
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light bg-danger text-white">
                     <tr>
                         <th scope="col bg-success" colspan="2">Featured</th>
                     </tr>
@@ -100,8 +100,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for teacher in teaching_list %}
-                    {% for leave in teacher %}
+                    {% for leave in teaching_pending_list %}
                     <tr>
                         <td>{{leave.e_id}}</td>
                         <td>{{leave.first_name}}</td>
@@ -109,10 +108,10 @@
                         <td>{{leave.leave_type}}</td>
                         <td>{{leave.requested_days}}</td>
                         <td>{{leave.leave_Status}}</td>
-                        <td><button class="btn btn-outline-success">Accept</button></td>
-                        <td><button class="btn btn-outline-danger">Reject</button></td>
+                        <td><a class="btn btn-outline-success" href="{% url 'accept_leave' leave.id %}">Accept</a>
+                        </td>
+                        <td><a class="btn btn-outline-danger" href="{% url 'reject_leave' leave.id %}">Reject</a></td>
                     </tr>
-                    {%endfor%}
                     {% endfor %}
                 </tbody>
             </table>
@@ -133,8 +132,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for person in non_teaching_list %}
-                    {% for leave in person %}
+                    {% for leave in non_teaching_pending_list %}
                     <tr>
                         <td>{{leave.e_id}}</td>
                         <td>{{leave.first_name}}</td>
@@ -142,10 +140,9 @@
                         <td>{{leave.leave_type}}</td>
                         <td>{{leave.requested_days}}</td>
                         <td>{{leave.leave_Status}}</td>
-                        <td><button class="btn btn-outline-success">Accept</button></td>
-                        <td><button class="btn btn-outline-danger">Reject</button></td>
+                        <td><a class="btn btn-outline-success" href="{% url 'accept_leave' leave.id %}">Accept</a></td>
+                        <td><a class="btn btn-outline-danger" href="{% url 'reject_leave' leave.id %}">Reject</a></td>
                     </tr>
-                    {%endfor%}
                     {% endfor %}
                 </tbody>
             </table>

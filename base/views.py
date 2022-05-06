@@ -145,7 +145,6 @@ def user_profile(request, pk):
     # user = User.objects.get(id=pk)
     user = User.objects.get(id=pk)
     group = user.groups.all()[0].name
-    print(group)
     profile = ''
     if group == 'admin':
         print('Hi you are admin')
@@ -263,11 +262,24 @@ def settings(request):
     return render(request, 'base/settings.html', {'form': form})
 
 
-def accept(request):
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def accept_leave(request, pk):
+    user_leave = Leave.objects.get(id=pk)
+    user_leave.leave_Status = 'Approved'
+    user_leave.save()
+    messages.success(request, 'Leave has been granted successfully!')
+    return redirect('admin_leave')
 
-    print(Leave.objects.get().all()[0].name)
 
-    return
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def reject_leave(request, pk):
+    user_leave = Leave.objects.get(id=pk)
+    user_leave.leave_Status = 'Declined'
+    user_leave.save()
+    messages.success(request, 'Leave has been rejected successfully!')
+    return redirect('admin_leave')
 
 
 @login_required(login_url='login')
@@ -363,30 +375,43 @@ def admin_leave(request):
     no_of_leaves_pending = 0
     no_of_leaves_declined = 0
 
+    teaching_pending_list = []
+    teaching_approved_list = []
+    teaching_declined_list = []
+
     for i in teaching_list:
         for j in i:
             if j.leave_Status == 'Pending':
                 no_of_leaves_pending += 1
+                teaching_pending_list.append(j)
             elif j.leave_Status == 'Approved':
+                teaching_approved_list.append(j)
                 no_of_leaves_granted += 1
-            elif j.leaves_Status == 'Declined':
+            elif j.leave_Status == 'Declined':
+                teaching_declined_list.append(j)
                 no_of_leaves_declined += 1
             no_of_teaching_leaves += 1
+
+    non_teaching_pending_list = []
+    non_teaching_approved_list = []
+    non_teaching_declined_list = []
 
     for i in non_teaching_list:
         for j in i:
             if j.leave_Status == 'Pending':
+                non_teaching_pending_list.append(j)
                 no_of_leaves_pending += 1
             elif j.leave_Status == 'Approved':
+                non_teaching_approved_list.append(j)
                 no_of_leaves_granted += 1
             elif j.leaves_Status == 'Declined':
+                non_teaching_declined_list.append(j)
                 no_of_leaves_declined += 1
 
             no_of_non_teaching_leaves += 1
-
     total_leaves = no_of_teaching_leaves + no_of_non_teaching_leaves
-    return render(request, 'base/admin_leave.html', {'teaching_list': teaching_list,
-                                                     'non_teaching_list': non_teaching_list,
+    return render(request, 'base/admin_leave.html', {'teaching_pending_list': teaching_pending_list,
+                                                     'non_teaching_pending_list': non_teaching_pending_list,
                                                      'no_of_teaching_leaves': no_of_teaching_leaves,
                                                      'no_of_non_teaching_leaves': no_of_non_teaching_leaves,
                                                      'total_leaves': total_leaves,

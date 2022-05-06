@@ -78,8 +78,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries':{
-            'base_extras.py': 'base.templatetags.base_extras',
-            
+                'base_extras.py': 'base.templatetags.base_extras',
+
             },
         },
     },

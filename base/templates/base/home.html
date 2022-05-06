@@ -126,7 +126,7 @@
                         </li>
                         {% if request.user|has_group:"admin" %}
                         <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/user/leave/'%} active {% endif %}"
+                            <a class="nav-link {% if request.path == '/user/admin_leave/'%} active {% endif %}"
                                 href="{% url 'admin_leave' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     class="bi bi-table" viewBox="0 0 16 16">
