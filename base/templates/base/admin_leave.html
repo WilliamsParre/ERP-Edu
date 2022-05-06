@@ -140,8 +140,10 @@
                         <td>{{leave.leave_type}}</td>
                         <td>{{leave.requested_days}}</td>
                         <td>{{leave.leave_Status}}</td>
-                        <td><a class="btn btn-outline-success" href="{% url 'accept_leave' leave.id %}">Accept</a></td>
-                        <td><a class="btn btn-outline-danger" href="{% url 'reject_leave' leave.id %}">Reject</a></td>
+                        <td><a class="btn btn-outline-success"
+                                href="{% url 'non_teaching_accept_leave' leave.id %}">Accept</a></td>
+                        <td><a class="btn btn-outline-danger"
+                                href="{% url 'non_teaching_reject_leave' leave.id %}">Reject</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

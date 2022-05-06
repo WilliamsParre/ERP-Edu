@@ -264,7 +264,7 @@ def settings(request):
 
 @login_required(login_url='login')
 @allowed_user(roles=['admin'])
-def accept_leave(request, pk):
+def teaching_accept_leave(request, pk):
     user_leave = Leave.objects.get(id=pk)
     user_leave.leave_Status = 'Approved'
     user_leave.save()
@@ -274,8 +274,28 @@ def accept_leave(request, pk):
 
 @login_required(login_url='login')
 @allowed_user(roles=['admin'])
-def reject_leave(request, pk):
+def non_teaching_accept_leave(request, pk):
+    user_leave = NonTeachingLeave.objects.get(id=pk)
+    user_leave.leave_Status = 'Approved'
+    user_leave.save()
+    messages.success(request, 'Leave has been granted successfully!')
+    return redirect('admin_leave')
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def teaching_reject_leave(request, pk):
     user_leave = Leave.objects.get(id=pk)
+    user_leave.leave_Status = 'Declined'
+    user_leave.save()
+    messages.success(request, 'Leave has been rejected successfully!')
+    return redirect('admin_leave')
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def non_teaching_reject_leave(request, pk):
+    user_leave = NonTeachingLeave.objects.get(id=pk)
     user_leave.leave_Status = 'Declined'
     user_leave.save()
     messages.success(request, 'Leave has been rejected successfully!')
@@ -404,7 +424,7 @@ def admin_leave(request):
             elif j.leave_Status == 'Approved':
                 non_teaching_approved_list.append(j)
                 no_of_leaves_granted += 1
-            elif j.leaves_Status == 'Declined':
+            elif j.leave_Status == 'Declined':
                 non_teaching_declined_list.append(j)
                 no_of_leaves_declined += 1
 
