@@ -1,0 +1,36 @@
+{% extends 'base/home.html' %}
+{% block content %}
+<div>
+    <div class="contanier">
+        <div class="row">
+            <div class="col-lg-6 col-sm-12">
+                {% autoescape off %}
+                {{ bar_graph }}
+                {% endautoescape %}
+            </div>
+            <div class="col-lg-6 col-sm-12">
+                {% autoescape off %}
+                {{ org_pie_chart }}
+                {% endautoescape %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
+                {% autoescape off %}
+                {{ teaching_pie_chart }}
+                {% endautoescape %}
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                {% autoescape off %}
+                {{non_teaching_pie_chart}}
+                {% endautoescape %}
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                {% autoescape off %}
+                {{student_pie_chart}}
+                {% endautoescape %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

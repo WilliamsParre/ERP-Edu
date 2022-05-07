@@ -40,6 +40,7 @@ urlpatterns = [
     path('admin_leave/', views.admin_leave, name='admin_leave'),
 
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('attendance/', views.attendance, name='attendance'),
 
     path('fees/', views.fees, name='fees'),

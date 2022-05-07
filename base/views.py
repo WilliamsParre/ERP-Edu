@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from numpy import tile
 from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
@@ -11,11 +12,21 @@ from .forms import StudentRegistriationForm, signUpForm, OrginizationRegistratio
 from leave.forms import Leave, NonTeachingLeave, LeaveForm, NonTeachingLeaveForm
 from base.models import Course, Lecturer, NonTeaching, Orginization, Student
 from django.contrib.auth import update_session_auth_hash
+import pandas as pd
+from plotly.offline import plot
+import plotly.express as px
 
 
 @login_required(login_url='login')
 def home(request):
-    return render(request, 'base/dashboard.html')
+    pk = request.user.id
+    user = User.objects.get(id=pk)
+    group = user.groups.all()[0].name
+
+    if group == 'admin':
+        return redirect('admin_dashboard')
+
+    return redirect('dashboard')
 
 
 def login_page(request):
@@ -161,9 +172,100 @@ def user_profile(request, pk):
     return render(request, 'base/profile.html', context)
 
 
-@login_required(login_url='login')
 def dashboard(request):
     return render(request, 'base/dashboard.html')
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def admin_dashboard(request):
+
+    org = Orginization.objects.get(owner=request.user)
+    faculty_strength = Lecturer.objects.filter(orginization=org).count()
+    students_strength = Student.objects.filter(orginization=org).count()
+    non_teaching_strength = NonTeaching.objects.filter(
+        orginization=org).count()
+
+    # Bar Graph for Strength of Organization
+    org_data = {
+        'users': ['Faculty', 'Non-Teaching', 'Students'],
+        'strength': [faculty_strength, non_teaching_strength, students_strength],
+    }
+
+    df = pd.DataFrame(org_data, index=None)
+
+    fig = px.bar(df, x='users', y='strength',
+                 title="Organization strength")
+
+    bar_graph = plot(fig, output_type="div")
+
+    # Pie Chart for Organization
+
+    fig = px.pie(df, values='strength', names='users', title='Orginization')
+
+    org_pie_chart = plot(fig, output_type="div")
+
+    # Pie Chart for Teaching Staff
+    male = Lecturer.objects.filter(orginization=org, gender='Male').count()
+    female = Lecturer.objects.filter(orginization=org, gender='Female').count()
+    others = Lecturer.objects.filter(orginization=org, gender='Others').count()
+
+    pie_chart_data = {
+        'names': ['Male', 'Female', 'Others'],
+        'no_of_users': [male, female, others]
+    }
+
+    pie_df = pd.DataFrame(pie_chart_data)
+
+    fig = px.pie(pie_df, values='no_of_users',
+                 names='names', title='Teaching Staff')
+
+    teaching_pie_chart = plot(fig, output_type="div")
+
+    # Pie Chart for Non-Teaching
+    male = NonTeaching.objects.filter(orginization=org, gender='Male').count()
+    female = NonTeaching.objects.filter(
+        orginization=org, gender='Female').count()
+    others = NonTeaching.objects.filter(
+        orginization=org, gender='Others').count()
+
+    pie_chart_data = {
+        'names': ['Male', 'Female', 'Others'],
+        'no_of_users': [male, female, others]
+    }
+
+    pie_df = pd.DataFrame(pie_chart_data)
+
+    fig = px.pie(pie_df, values='no_of_users',
+                 names='names', title='Non-Teaching Staff')
+
+    non_teaching_pie_chart = plot(fig, output_type="div")
+
+    # Pie Chart for Students
+    male = Student.objects.filter(orginization=org, gender='Male').count()
+    female = Student.objects.filter(
+        orginization=org, gender='Female').count()
+    others = Student.objects.filter(
+        orginization=org, gender='Others').count()
+
+    pie_chart_data = {
+        'names': ['Male', 'Female', 'Others'],
+        'no_of_users': [male, female, others]
+    }
+
+    pie_df = pd.DataFrame(pie_chart_data)
+
+    fig = px.pie(pie_df, values='no_of_users',
+                 names='names', title='Students')
+
+    student_pie_chart = plot(fig, output_type="div")
+
+    return render(request, 'base/admin_dashboard.html', {'bar_graph': bar_graph,
+                                                         'org_pie_chart': org_pie_chart,
+                                                         'teaching_pie_chart': teaching_pie_chart,
+                                                         'non_teaching_pie_chart': non_teaching_pie_chart,
+                                                         'student_pie_chart': student_pie_chart
+                                                         })
 
 
 @login_required(login_url='login')
