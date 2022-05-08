@@ -43,6 +43,13 @@ urlpatterns = [
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('attendance/', views.attendance, name='attendance'),
 
+    # Manage for Organization
+    path('manage/', views.manage, name='manage'),
+    path('delete_faculty/<str:pk>/', views.delete_faculty, name='delete_faculty'),
+    path('delete_non_teaching/<str:pk>/', views.delete_non_teaching,
+         name='delete_non_teaching'),
+    path('delete_student/<str:pk>/', views.delete_student, name='delete_student'),
+
     path('fees/', views.fees, name='fees'),
     path('grades/', views.grades, name='grades'),
     path('qualification/', views.qualification, name='qualification'),

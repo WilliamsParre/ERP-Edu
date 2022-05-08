@@ -1,0 +1,176 @@
+{% extends 'base/home.html' %}
+{% block content %}
+<div>
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-sm">
+                <div class="card mt-2"
+                    style="border: 2.5px solid steelblue;justify-content: center;box-shadow: 3px 3px 3px #888888;border-radius:15px;">
+                    <h5 class="card-header" style="text-align:center;">
+                        Faculty
+                    </h5>
+                    <div class="card-body" style="text-align:center;">
+                        <h5 class="card-title">{{faculty_strength}}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card mt-2"
+                    style="border: 2.5px solid steelblue;justify-content: center;box-shadow: 3px 3px 3px #888888;border-radius:15px;">
+                    <h5 class="card-header" style="text-align:center;">
+                        Non-Teaching
+                    </h5>
+                    <div class="card-body" style="text-align:center;">
+                        <h5 class="card-title">{{non_teaching_strength}}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card mt-2"
+                    style="border: 2.5px solid steelblue;justify-content: center;box-shadow: 3px 3px 3px #888888;border-radius:15px;">
+                    <h5 class="card-header" style="text-align:center;">
+                        Students
+                    </h5>
+                    <div class="card-body" style="text-align:center;">
+                        <h5 class="card-title">{{students_strength}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-outline-primary btn-lg mb-4" onclick="showFaculty()">Faculty</button>
+        <button class="btn btn-outline-danger btn-lg mb-4" onclick="showNonTeaching()">Non-Teaching</button>
+        <button class="btn btn-outline-dark btn-lg mb-4" onclick="showStudents()">Students</button>
+        <br />
+        <div class="col-lg-12 col-sm-12" id="faculty" style="display:Block;">
+            <h3 class="badge bg-danger p-2">Teaching Staff</h3>
+            <div class="col">
+                <table class="table table-bordered table-hover rounded">
+                    <thead class="thead-light bg-info text-white">
+                        <tr>
+                            <th scope="col">E_Id</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Mobile No</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for faculty in faculty_list %}
+                        <tr>
+                            <td>{{faculty.e_id}}</td>
+                            <td>{{faculty.first_name}}</td>
+                            <td>{{faculty.last_name}}</td>
+                            <td>{{faculty.gender}}</td>
+                            <td>{{faculty.email}}</td>
+                            <td>{{faculty.mobile}}</td>
+                            <td><a class="btn btn-outline-danger"
+                                    href="{% url 'delete_faculty' faculty.e_id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-sm-12" id="non_teaching" style="display:None;">
+            <h3 class="badge bg-danger p-2">Non-Teaching Staff</h3>
+            <div class="col">
+                <table class="table table-bordered table-hover rounded">
+                    <thead class="thead-light bg-info text-white">
+                        <tr>
+                            <th scope="col">Nt_E_Id</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Mobile No</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for non_teaching in non_teaching_list %}
+                        <tr>
+                            <td>{{non_teaching.nt_e_id}}</td>
+                            <td>{{non_teaching.first_name}}</td>
+                            <td>{{non_teaching.last_name}}</td>
+                            <td>{{non_teaching.gender}}</td>
+                            <td>{{non_teaching.email}}</td>
+                            <td>{{non_teaching.mobile}}</td>
+                            <td><a class="btn btn-outline-danger"
+                                    href="{% url 'delete_non_teaching' non_teaching.nt_e_id %}">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-sm-12" id="student" style="display:None;">
+            <h3 class="badge bg-danger p-2">Students</h3>
+            <div class="col">
+                <table class="table table-bordered table-hover rounded">
+                    <thead class="thead-light bg-info text-white">
+                        <tr>
+                            <th scope="col">U_Id</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Mobile No</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{student.u_id}}</td>
+                            <td>{{student.first_name}}</td>
+                            <td>{{student.last_name}}</td>
+                            <td>{{student.gender}}</td>
+                            <td>{{student.email}}</td>
+                            <td>{{student.mobile}}</td>
+                            <td><a class="btn btn-outline-danger"
+                                    href="{% url 'delete_student' student.u_id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showStudents() {
+            if (document.getElementById('student').style.display == "none") {
+                document.getElementById('student').style.display = "block";
+                document.getElementById('faculty').style.display = "none";
+                document.getElementById('non_teaching').style.display = "none";
+            }
+            else {
+                document.getElementById('student').style.display = "none";
+            }
+        }
+        function showFaculty() {
+            if (document.getElementById('faculty').style.display == "none") {
+                document.getElementById('faculty').style.display = "block";
+                document.getElementById('student').style.display = "none";
+                document.getElementById('non_teaching').style.display = "none";
+
+            } else {
+                document.getElementById('faculty').style.display = "none";
+            }
+        }
+        function showNonTeaching() {
+            if (document.getElementById('non_teaching').style.display == "none") {
+                document.getElementById('non_teaching').style.display = "block";
+                document.getElementById('student').style.display = "none";
+                document.getElementById('faculty').style.display = "none";
+            }
+            else {
+                document.getElementById('non_teaching').style.display = "none";
+            }
+        }
+    </script>
+</div>
+{% endblock %}

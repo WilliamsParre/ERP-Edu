@@ -201,7 +201,8 @@ def admin_dashboard(request):
 
     # Pie Chart for Organization
 
-    fig = px.pie(df, values='strength', names='users', title='Orginization')
+    fig = px.pie(df, values='strength', names='users',
+                 hole=.5, title='Orginization')
 
     org_pie_chart = plot(fig, output_type="div")
 
@@ -541,3 +542,46 @@ def admin_leave(request):
                                                      'no_of_leaves_pending': no_of_leaves_pending,
                                                      'no_of_leaves_declined': no_of_leaves_declined
                                                      })
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def manage(request):
+    org = Orginization.objects.get(owner=request.user)
+    faculty_list = Lecturer.objects.filter(orginization=org)
+    students = Student.objects.filter(orginization=org)
+    non_teaching_list = NonTeaching.objects.filter(orginization=org)
+    faculty_strength = len(faculty_list)
+    students_strength = len(students)
+    non_teaching_strength = len(non_teaching_list)
+    return render(request, 'base/manage.html', {'faculty_list': faculty_list,
+                                                'non_teaching_list': non_teaching_list,
+                                                'students': students,
+                                                'faculty_strength': faculty_strength,
+                                                'students_strength': students_strength,
+                                                'non_teaching_strength': non_teaching_strength
+                                                })
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def delete_faculty(request, pk):
+    Lecturer.objects.get(e_id=pk).delete()
+    messages.success(request, 'Faculty deleted successfully!')
+    return redirect('manage')
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def delete_non_teaching(request, pk):
+    NonTeaching.objects.get(nt_e_id=pk).delete()
+    messages.success(request, 'Non-Teaching staff deleted successfully!')
+    return redirect('manage')
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def delete_student(request, pk):
+    Student.objects.get(u_id=pk).delete()
+    messages.success(request, 'Student deleted successfully!')
+    return redirect('manage')

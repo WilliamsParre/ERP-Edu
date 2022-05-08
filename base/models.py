@@ -11,7 +11,7 @@ class Orginization(models.Model):
     owner = models.OneToOneField(
         User, on_delete=models.CASCADE, unique=True)
     email = models.EmailField(unique=True)
-    
+
     def __str__(self):
         return self.orginization_name
 
@@ -22,8 +22,8 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.name+' ---> '+str(self.orginization)
-        
-        
+
+
 class Course(models.Model):
     orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
@@ -35,7 +35,7 @@ class Course(models.Model):
     year = models.IntegerField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    
+
     def save(self, *args, **kwargs):
         x = str(self.branch).split('--->')
         x = x[1].strip()
@@ -43,13 +43,13 @@ class Course(models.Model):
         print(x == str(self.orginization))
         if x == str(self.orginization):
             super(Course, self).save(*args, **kwargs)
-        
+
     def __str__(self):
         return self.name
 
 
 class Student(models.Model):
-    orginization = models.OneToOneField(Orginization, on_delete=models.CASCADE)
+    orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
         Branch, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -71,7 +71,7 @@ class Student(models.Model):
     weight = models.IntegerField()
     nationality = models.CharField(max_length=40)
     admission_date = models.DateField()
-    
+
     def __str__(self):
         return self.first_name+' '+self.last_name
 
@@ -99,9 +99,10 @@ class Lecturer(models.Model):
     weight = models.IntegerField()
     nationality = models.CharField(max_length=40)
     admission_date = models.DateField()
-    
+
     def __str__(self):
         return self.first_name+' '+self.last_name
+
 
 class NonTeaching(models.Model):
     orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
@@ -124,7 +125,6 @@ class NonTeaching(models.Model):
     weight = models.IntegerField()
     nationality = models.CharField(max_length=40)
     admission_date = models.DateField()
-    
+
     def __str__(self):
         return self.first_name+' '+self.last_name
-    

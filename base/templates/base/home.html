@@ -143,6 +143,19 @@
                         </li>
                         {% if request.user|has_group:"admin" %}
                         <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/user/manage/'%} active {% endif %}"
+                                href="{% url 'manage' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    class="bi bi-kanban" viewBox="0 0 16 16">
+                                    <path
+                                        d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h11zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-11z" />
+                                    <path
+                                        d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3z" />
+                                </svg>
+                                <span class="ml-2">Manage</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {% if request.path == '/user/admin_leave/'%} active {% endif %}"
                                 href="{% url 'admin_leave' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -237,9 +250,7 @@
                     {% for message in messages %}
                     <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
                         {{message}}
-                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"></span>
-                        </button>
+                        <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
                     </div>
                     {% endfor %}
                 </div>
