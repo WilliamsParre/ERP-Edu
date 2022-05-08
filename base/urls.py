@@ -49,6 +49,10 @@ urlpatterns = [
          name='delete_non_teaching'),
     path('delete_student/<str:pk>/', views.delete_student, name='delete_student'),
 
+    # Course for Admin
+    path('admin_courses/', views.admin_courses, name="admin_courses"),
+    path('delete_course/<str:pk>/', views.delete_course, name="admin_courses"),
+
     path('fees/', views.fees, name='fees'),
     path('grades/', views.grades, name='grades'),
     path('qualification/', views.qualification, name='qualification'),

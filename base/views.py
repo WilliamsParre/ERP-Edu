@@ -261,12 +261,29 @@ def admin_dashboard(request):
 
     student_pie_chart = plot(fig, output_type="div")
 
-    return render(request, 'base/admin_dashboard.html', {'bar_graph': bar_graph,
-                                                         'org_pie_chart': org_pie_chart,
-                                                         'teaching_pie_chart': teaching_pie_chart,
-                                                         'non_teaching_pie_chart': non_teaching_pie_chart,
-                                                         'student_pie_chart': student_pie_chart
-                                                         })
+    return render(request, 'base/admin/admin_dashboard.html', {'bar_graph': bar_graph,
+                                                               'org_pie_chart': org_pie_chart,
+                                                               'teaching_pie_chart': teaching_pie_chart,
+                                                               'non_teaching_pie_chart': non_teaching_pie_chart,
+                                                               'student_pie_chart': student_pie_chart
+                                                               })
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def admin_courses(request):
+
+    courses = Course.objects.filter(organization=request.user.organization)
+
+    return render(request, 'base/admin/admin_courses.html', {'courses': courses})
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def delete_course(request, pk):
+    Course.objects.get(id=pk).delete()
+    messages.success(request, 'Course deleted successfully')
+    return redirect('admin_courses')
 
 
 @login_required(login_url='login')
@@ -533,15 +550,15 @@ def admin_leave(request):
 
             no_of_non_teaching_leaves += 1
     total_leaves = no_of_teaching_leaves + no_of_non_teaching_leaves
-    return render(request, 'base/admin_leave.html', {'teaching_pending_list': teaching_pending_list,
-                                                     'non_teaching_pending_list': non_teaching_pending_list,
-                                                     'no_of_teaching_leaves': no_of_teaching_leaves,
-                                                     'no_of_non_teaching_leaves': no_of_non_teaching_leaves,
-                                                     'total_leaves': total_leaves,
-                                                     'no_of_leaves_granted': no_of_leaves_granted,
-                                                     'no_of_leaves_pending': no_of_leaves_pending,
-                                                     'no_of_leaves_declined': no_of_leaves_declined
-                                                     })
+    return render(request, 'base/admin/admin_leave.html', {'teaching_pending_list': teaching_pending_list,
+                                                           'non_teaching_pending_list': non_teaching_pending_list,
+                                                           'no_of_teaching_leaves': no_of_teaching_leaves,
+                                                           'no_of_non_teaching_leaves': no_of_non_teaching_leaves,
+                                                           'total_leaves': total_leaves,
+                                                           'no_of_leaves_granted': no_of_leaves_granted,
+                                                           'no_of_leaves_pending': no_of_leaves_pending,
+                                                           'no_of_leaves_declined': no_of_leaves_declined
+                                                           })
 
 
 @login_required(login_url='login')

@@ -1,0 +1,35 @@
+{% extends 'base/home.html' %}
+{% block content %}
+<div>
+    <div class="contanier">
+        <h4 class="badge bg-danger p-3">Courses your offer</h4>
+        <div class="col">
+            <table class="table table-bordered table-hover rounded">
+                <thead class="thead-light bg-info text-white">
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Organization</th>
+                        <th scope="col">Semester</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <td>{{course.code}}</td>
+                        <td>{{course.name}}</td>
+                        <td>{{course.description}}</td>
+                        <td>{{course.organization}}</td>
+                        <td>{{course.semester}}</td>
+                        <td>{{course.year}}</td>
+                        <td><a class="btn btn-outline-danger" href="{% url 'admin_courses' course.id %}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endblock %}

@@ -29,6 +29,7 @@ class Course(models.Model):
         odd = 'Odd'
         even = 'Even'
 
+    id = models.BigAutoField(primary_key=True)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
         Branch, on_delete=models.CASCADE)
