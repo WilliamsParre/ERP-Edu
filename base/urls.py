@@ -52,6 +52,8 @@ urlpatterns = [
     # Course for Admin
     path('admin_courses/', views.admin_courses, name="admin_courses"),
     path('delete_course/<str:pk>/', views.delete_course, name="admin_courses"),
+    path('add_course', views.add_course, name='add_course'),
+    path('edit_course/<str:pk>/', views.edit_course, name='edit_course'),
 
     path('fees/', views.fees, name='fees'),
     path('grades/', views.grades, name='grades'),

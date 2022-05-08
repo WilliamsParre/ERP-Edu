@@ -2,7 +2,17 @@
 {% block content %}
 <div>
     <div class="contanier">
-        <h4 class="badge bg-danger p-3">Courses your offer</h4>
+        <div>
+            <h4 class="badge bg-danger p-3 sm-col-12">Courses your offer</h4>
+            <a class="btn btn-primary float-lg-right sm-col-12 p-2" href="{% url 'add_course' %}">
+                Add Course
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg"
+                    viewBox="0 2 16 16">
+                    <path fill-rule="evenodd"
+                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                </svg>
+            </a>
+        </div>
         <div class="col">
             <table class="table table-bordered table-hover rounded">
                 <thead class="thead-light bg-info text-white">
@@ -13,6 +23,7 @@
                         <th scope="col">Organization</th>
                         <th scope="col">Semester</th>
                         <th scope="col">Year</th>
+                        <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
                 </thead>
@@ -25,6 +36,7 @@
                         <td>{{course.organization}}</td>
                         <td>{{course.semester}}</td>
                         <td>{{course.year}}</td>
+                        <td><a class="btn btn-outline-success" href="{% url 'edit_course' course.id %}">Edit</a></td>
                         <td><a class="btn btn-outline-danger" href="{% url 'admin_courses' course.id %}">Delete</a></td>
                     </tr>
                     {% endfor %}

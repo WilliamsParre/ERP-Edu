@@ -4,11 +4,11 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from numpy import tile
+from numpy import save, tile
 from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
-from .forms import StudentRegistriationForm, signUpForm, OrganizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm, UserProfileChangeForm
+from .forms import CourseForm, StudentRegistriationForm, signUpForm, OrganizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm, UserProfileChangeForm
 from leave.forms import Leave, NonTeachingLeave, LeaveForm, NonTeachingLeaveForm
 from base.models import Course, Faculty, NonTeaching, Organization, Student
 from django.contrib.auth import update_session_auth_hash
@@ -93,7 +93,6 @@ def org_registration(request):
             user = User.objects.get(username=request.user.username)
             user.username = user.username.lower()
             user.is_active = True
-            # user.is_staff = True
             admin = Group.objects.get(name='admin')
             user.save()
             user.groups.add(admin)
@@ -276,6 +275,39 @@ def admin_courses(request):
     courses = Course.objects.filter(organization=request.user.organization)
 
     return render(request, 'base/admin/admin_courses.html', {'courses': courses})
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def add_course(request):
+    form = CourseForm()
+    if request.method == "POST":
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.organization = request.user.organization
+            form.save()
+            form = CourseForm()
+            messages.success(request, 'Course added successfully!')
+        else:
+            messages.error(request, 'Error occured during form processing.')
+
+    return render(request, 'base/admin/add_course.html', {'form': form})
+
+
+@login_required(login_url='login')
+@allowed_user(roles=['admin'])
+def edit_course(request, pk):
+    course = Course.objects.get(id=pk)
+    form = CourseForm(instance=course)
+    if request.method == "POST":
+        form = CourseForm(request.POST, instance=course)
+        form.save()
+        messages.success(request, 'Course updated successfully!')
+        return redirect('admin_courses')
+    else:
+        messages.error(request, 'Error occured during form processing.')
+    return render(request, 'base/admin/edit_course.html', {'form': form, 'id': pk})
 
 
 @login_required(login_url='login')

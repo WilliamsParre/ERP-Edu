@@ -1,8 +1,9 @@
+from turtle import update
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
-from .models import Organization, Student, Faculty, NonTeaching
+from .models import Course, Organization, Student, Faculty, NonTeaching
 
 
 class signUpForm(UserCreationForm):
@@ -46,3 +47,10 @@ class UserProfileChangeForm(UserChangeForm):
         model = User
         fields = ('first_name', 'last_name',
                   'email')
+
+
+class CourseForm(ModelForm):
+    class Meta:
+        model = Course
+        fields = '__all__'
+        exclude = ('organization',)

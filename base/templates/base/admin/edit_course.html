@@ -1,0 +1,16 @@
+{% extends 'base/home.html' %}
+{% load bootstrap3 %}
+{% block content %}
+<div>
+    <div class="container">
+        <form method="POST" action="{% url 'edit_course' id %}">
+            {% csrf_token %}
+            <div class="container col-lg-5 col-sm-12">
+                <h2>Edit Course</h2>
+                {% bootstrap_form form %}
+                <input type="submit" class="btn btn-success" style="width: 100%;margin-top: 2rem;" value="Update" />
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
