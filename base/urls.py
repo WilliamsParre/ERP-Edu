@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -33,7 +32,7 @@ urlpatterns = [
     # Leave Reject
     path('teaching_reject_leave/<str:pk>/',
          views.teaching_reject_leave, name="reject_leave"),
-    path('non_teacging_reject_leave/<str:pk>/',
+    path('non_teaching_reject_leave/<str:pk>/',
          views.non_teaching_reject_leave, name="non_teaching_reject_leave"),
 
     # Admin Dashboard for Leave Management

@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
-from .models import Orginization, Student, Lecturer, NonTeaching
+from .models import Organization, Student, Faculty, NonTeaching
 
 
 class signUpForm(UserCreationForm):
@@ -16,9 +16,9 @@ class signUpForm(UserCreationForm):
                   'email', 'password1', 'password2')
 
 
-class OrginizationRegistrationForm(ModelForm):
+class OrganizationRegistrationForm(ModelForm):
     class Meta:
-        model = Orginization
+        model = Organization
         fields = '__all__'
 
 
@@ -31,16 +31,18 @@ class StudentRegistriationForm(ModelForm):
 
 class FacultyRegistriationForm(ModelForm):
     class Meta:
-        model = Lecturer
+        model = Faculty
         fields = '__all__'
+
 
 class NonTeachingFacultyRegistriationForm(ModelForm):
     class Meta:
         model = NonTeaching
         fields = '__all__'
 
+
 class UserProfileChangeForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 
+        fields = ('first_name', 'last_name',
                   'email')

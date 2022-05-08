@@ -1,5 +1,5 @@
 from django.db import models
-from base.models import Lecturer, NonTeaching
+from base.models import Faculty, NonTeaching
 # Create your models here.
 
 
@@ -17,7 +17,7 @@ class Leave(models.Model):
         Cancelled_Status = 'Cancelled'
 
     id = models.BigAutoField(primary_key=True)
-    e_id = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
+    e_id = models.ForeignKey(Faculty, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     leave_type = models.CharField(

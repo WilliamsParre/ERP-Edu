@@ -47,7 +47,8 @@ INSTALLED_APPS = [
 
     'home.apps.HomeConfig',
     'base.apps.BaseConfig',
-    'leave.apps.LeaveConfig'
+    'leave.apps.LeaveConfig',
+    'registration.apps.RegistrationConfig'
 ]
 
 MIDDLEWARE = [

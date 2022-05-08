@@ -6,32 +6,36 @@ from django.db.models import F
 # Create your models here.
 
 
-class Orginization(models.Model):
-    orginization_name = models.CharField(max_length=200, unique=True)
+class Organization(models.Model):
+    organization_name = models.CharField(max_length=200, unique=True)
     owner = models.OneToOneField(
         User, on_delete=models.CASCADE, unique=True)
     email = models.EmailField(unique=True)
 
     def __str__(self):
-        return self.orginization_name
+        return self.organization_name
 
 
 class Branch(models.Model):
-    orginization = models.OneToOneField(Orginization, on_delete=models.CASCADE)
+    organization = models.OneToOneField(Organization, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name+' ---> '+str(self.orginization)
+        return self.name+' ---> '+str(self.organization)
 
 
 class Course(models.Model):
-    orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
+    class SemesterChoices(models.TextChoices):
+        odd = 'Odd'
+        even = 'Even'
+
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
         Branch, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     code = models.CharField(max_length=200)
-    semester = models.CharField(max_length=20)
+    semester = models.CharField(max_length=20, choices=SemesterChoices.choices)
     year = models.IntegerField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -40,8 +44,8 @@ class Course(models.Model):
         x = str(self.branch).split('--->')
         x = x[1].strip()
         print(x)
-        print(x == str(self.orginization))
-        if x == str(self.orginization):
+        print(x == str(self.organization))
+        if x == str(self.organization):
             super(Course, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -49,7 +53,7 @@ class Course(models.Model):
 
 
 class Student(models.Model):
-    orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
         Branch, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -76,8 +80,8 @@ class Student(models.Model):
         return self.first_name+' '+self.last_name
 
 
-class Lecturer(models.Model):
-    orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
+class Faculty(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     branch = models.ForeignKey(
         Branch, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -105,7 +109,7 @@ class Lecturer(models.Model):
 
 
 class NonTeaching(models.Model):
-    orginization = models.ForeignKey(Orginization, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)

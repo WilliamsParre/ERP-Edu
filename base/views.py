@@ -8,9 +8,9 @@ from numpy import tile
 from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
-from .forms import StudentRegistriationForm, signUpForm, OrginizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm, UserProfileChangeForm
+from .forms import StudentRegistriationForm, signUpForm, OrganizationRegistrationForm, FacultyRegistriationForm, NonTeachingFacultyRegistriationForm, UserProfileChangeForm
 from leave.forms import Leave, NonTeachingLeave, LeaveForm, NonTeachingLeaveForm
-from base.models import Course, Lecturer, NonTeaching, Orginization, Student
+from base.models import Course, Faculty, NonTeaching, Organization, Student
 from django.contrib.auth import update_session_auth_hash
 import pandas as pd
 from plotly.offline import plot
@@ -68,13 +68,13 @@ def signup_page(request):
 
     if request.method == 'POST':
         form = signUpForm(request.POST)
-        form2 = OrginizationRegistrationForm(request.POST)
+        form2 = OrganizationRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             messages.success(
                 request, 'Registered successful! Account created successfully!')
-            org = OrginizationRegistrationForm()
+            org = OrganizationRegistrationForm()
             faculty = FacultyRegistriationForm()
             non_teaching = NonTeachingFacultyRegistriationForm()
             return render(request, 'base/registration.html', {'org': org, 'faculty': faculty, 'non_teaching': non_teaching})
@@ -87,7 +87,7 @@ def signup_page(request):
 def org_registration(request):
 
     if request.method == 'POST':
-        form = OrginizationRegistrationForm(request.POST)
+        form = OrganizationRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             user = User.objects.get(username=request.user.username)
@@ -100,7 +100,7 @@ def org_registration(request):
             user.save()
             logout(request)
             messages.success(
-                request, 'Registered successful! Orginization added successfully.')
+                request, 'Registered successful! Organization added successfully.')
         else:
             messages.error(request, 'An error occured during regestration')
 
@@ -116,13 +116,13 @@ def faculty_registration(request):
             user = User.objects.get(username=request.user.username)
             user.username = user.username.lower()
             user.is_active = False
-            lecturer = Group.objects.get(name='lecturer')
+            faculty = Group.objects.get(name='faculty')
             user.save()
-            user.groups.add(lecturer)
+            user.groups.add(faculty)
             user.save()
             logout(request)
             messages.success(
-                request, 'Registered successful! Message is sent to you orginisation for account activation.')
+                request, 'Registered successful! Message is sent to you organisation for account activation.')
         else:
             messages.error(request, 'An error occured during regestration')
 
@@ -144,7 +144,7 @@ def non_teaching_registration(request):
             user.save()
             logout(request)
             messages.success(
-                request, 'Registered successful! Message is sent to you orginisation for account activation.')
+                request, 'Registered successful! Message is sent to you organisation for account activation.')
         else:
             messages.error(request, 'An error occured during regestration')
 
@@ -159,9 +159,9 @@ def user_profile(request, pk):
     profile = ''
     if group == 'admin':
         print('Hi you are admin')
-    elif group == 'lecturer':
-        if Lecturer.objects.all().count() > 0:
-            profile = Lecturer.objects.get(user=user.id)
+    elif group == 'faculty':
+        if Faculty.objects.all().count() > 0:
+            profile = Faculty.objects.get(user=user.id)
     elif group == 'student':
         # profile = User.objects.filter(student__first_name=user.first_name)
         if Student.objects.all().count() > 0:
@@ -180,11 +180,11 @@ def dashboard(request):
 @allowed_user(roles=['admin'])
 def admin_dashboard(request):
 
-    org = Orginization.objects.get(owner=request.user)
-    faculty_strength = Lecturer.objects.filter(orginization=org).count()
-    students_strength = Student.objects.filter(orginization=org).count()
+    org = Organization.objects.get(owner=request.user)
+    faculty_strength = Faculty.objects.filter(organization=org).count()
+    students_strength = Student.objects.filter(organization=org).count()
     non_teaching_strength = NonTeaching.objects.filter(
-        orginization=org).count()
+        organization=org).count()
 
     # Bar Graph for Strength of Organization
     org_data = {
@@ -202,14 +202,14 @@ def admin_dashboard(request):
     # Pie Chart for Organization
 
     fig = px.pie(df, values='strength', names='users',
-                 hole=.5, title='Orginization')
+                 hole=.5, title='Organization')
 
     org_pie_chart = plot(fig, output_type="div")
 
     # Pie Chart for Teaching Staff
-    male = Lecturer.objects.filter(orginization=org, gender='Male').count()
-    female = Lecturer.objects.filter(orginization=org, gender='Female').count()
-    others = Lecturer.objects.filter(orginization=org, gender='Others').count()
+    male = Faculty.objects.filter(organization=org, gender='Male').count()
+    female = Faculty.objects.filter(organization=org, gender='Female').count()
+    others = Faculty.objects.filter(organization=org, gender='Others').count()
 
     pie_chart_data = {
         'names': ['Male', 'Female', 'Others'],
@@ -224,11 +224,11 @@ def admin_dashboard(request):
     teaching_pie_chart = plot(fig, output_type="div")
 
     # Pie Chart for Non-Teaching
-    male = NonTeaching.objects.filter(orginization=org, gender='Male').count()
+    male = NonTeaching.objects.filter(organization=org, gender='Male').count()
     female = NonTeaching.objects.filter(
-        orginization=org, gender='Female').count()
+        organization=org, gender='Female').count()
     others = NonTeaching.objects.filter(
-        orginization=org, gender='Others').count()
+        organization=org, gender='Others').count()
 
     pie_chart_data = {
         'names': ['Male', 'Female', 'Others'],
@@ -243,11 +243,11 @@ def admin_dashboard(request):
     non_teaching_pie_chart = plot(fig, output_type="div")
 
     # Pie Chart for Students
-    male = Student.objects.filter(orginization=org, gender='Male').count()
+    male = Student.objects.filter(organization=org, gender='Male').count()
     female = Student.objects.filter(
-        orginization=org, gender='Female').count()
+        organization=org, gender='Female').count()
     others = Student.objects.filter(
-        orginization=org, gender='Others').count()
+        organization=org, gender='Others').count()
 
     pie_chart_data = {
         'names': ['Male', 'Female', 'Others'],
@@ -280,7 +280,7 @@ def attendance(request):
 
 
 @login_required(login_url='login')
-@allowed_user(roles=['lecturer', 'non_teaching'])
+@allowed_user(roles=['faculty', 'non_teaching'])
 def leave(request):
     no_of_leaves = 0
     if request.user.groups.all()[0].name == 'non_teaching':
@@ -295,7 +295,7 @@ def leave(request):
         no_of_leaves_declined = NonTeachingLeave.objects.filter(
             e_id=user.nt_e_id, leave_Status='Declined').count()
     else:
-        user = Lecturer.objects.get(user=request.user.id)
+        user = Faculty.objects.get(user=request.user.id)
         leaves = Leave.objects.filter(e_id=user.e_id)
         total_leaves = Leave.objects.filter(e_id=user.e_id).count()
         no_of_leaves_granted = Leave.objects.filter(
@@ -308,7 +308,7 @@ def leave(request):
 
 
 @login_required(login_url='login')
-@allowed_user(roles=['lecturer', 'non_teaching'])
+@allowed_user(roles=['faculty', 'non_teaching'])
 def apply_leave(request):
     if request.user.groups.all()[0].name == 'non_teaching':
         form = NonTeachingLeaveForm()
@@ -324,7 +324,7 @@ def apply_leave(request):
             form.save()
             form = LeaveForm()
             messages.success(
-                request, 'Leave has been applied successfully! Message is sent to you orginisation for leave approval.')
+                request, 'Leave has been applied successfully! Message is sent to you organisation for leave approval.')
         else:
             messages.error(
                 request, 'An error occured during leave processing.')
@@ -423,15 +423,15 @@ def update_user_profile(request):
 
 
 @login_required(login_url='login')
-@allowed_user(roles=['student', 'lecturer', 'non_teaching'])
+@allowed_user(roles=['student', 'faculty', 'non_teaching'])
 def update_org_profile(request):
     pk = request.user.id
     user = User.objects.get(id=pk)
     group = user.groups.all()[0].name
     if request.method == "POST":
-        if group == 'lecturer':
+        if group == 'faculty':
             form = FacultyRegistriationForm(
-                request.POST, instance=Lecturer.objects.get(user=user.id))
+                request.POST, instance=Faculty.objects.get(user=user.id))
             if form.is_valid():
                 form.save()
                 messages.success(
@@ -464,9 +464,9 @@ def update_org_profile(request):
                 messages.error(
                     request, 'Error occured during form processing.')
     else:
-        if group == 'lecturer':
+        if group == 'faculty':
             form = FacultyRegistriationForm(
-                instance=Lecturer.objects.get(user=user.id))
+                instance=Faculty.objects.get(user=user.id))
         elif group == 'student':
             form = StudentRegistriationForm(
                 instance=Student.objects.get(user=user.id))
@@ -480,13 +480,13 @@ def update_org_profile(request):
 @login_required(login_url='login')
 @allowed_user(roles=['admin'])
 def admin_leave(request):
-    org = Orginization.objects.get(owner=request.user)
-    faculty = Lecturer.objects.filter(orginization=org)
+    org = Organization.objects.get(owner=request.user)
+    faculty = Faculty.objects.filter(organization=org)
     Leave.objects.filter()
     teaching_list = []
     for i in faculty:
         teaching_list.append(Leave.objects.filter(e_id=i.id))
-    non_teaching = NonTeaching.objects.filter(orginization=org)
+    non_teaching = NonTeaching.objects.filter(organization=org)
     non_teaching_list = []
     for i in non_teaching:
         non_teaching_list.append(NonTeachingLeave.objects.filter(e_id=i.id))
@@ -547,10 +547,10 @@ def admin_leave(request):
 @login_required(login_url='login')
 @allowed_user(roles=['admin'])
 def manage(request):
-    org = Orginization.objects.get(owner=request.user)
-    faculty_list = Lecturer.objects.filter(orginization=org)
-    students = Student.objects.filter(orginization=org)
-    non_teaching_list = NonTeaching.objects.filter(orginization=org)
+    org = Organization.objects.get(owner=request.user)
+    faculty_list = Faculty.objects.filter(organization=org)
+    students = Student.objects.filter(organization=org)
+    non_teaching_list = NonTeaching.objects.filter(organization=org)
     faculty_strength = len(faculty_list)
     students_strength = len(students)
     non_teaching_strength = len(non_teaching_list)
@@ -566,7 +566,7 @@ def manage(request):
 @login_required(login_url='login')
 @allowed_user(roles=['admin'])
 def delete_faculty(request, pk):
-    Lecturer.objects.get(e_id=pk).delete()
+    Faculty.objects.get(e_id=pk).delete()
     messages.success(request, 'Faculty deleted successfully!')
     return redirect('manage')
 

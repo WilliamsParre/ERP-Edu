@@ -9,7 +9,7 @@
         <hr />
         <p class="badge alert-success">Select user type</p>
         <br />
-        <button class="btn btn-outline-danger" onclick="showDiv()">Orginization</button>
+        <button class="btn btn-outline-danger" onclick="showDiv()">Organization</button>
         <button class="btn btn-outline-warning" onclick="showFacultyForm()">Faculty</button>
         <button class="btn btn-outline-secondary" onclick="showNonTeachingForm()">Non-Teaching</button>
         <br />
@@ -18,8 +18,8 @@
             <form method="POST" action="{% url 'org_registration' %}">
                 {% csrf_token %}
                 <div class="container col-lg-5 col-sm-12">
-                    <h2>Orginization Registration</h2>
-                    <p style="color:orange;">Register your orginisation!</p>
+                    <h2>Organization Registration</h2>
+                    <p style="color:orange;">Register your organisation!</p>
                     {% bootstrap_form org %}
                     <input type="submit" class="btn btn-success" style="width: 100%;margin-top: 2rem;"
                         value="Sign Up" />
@@ -32,7 +32,7 @@
                 {% csrf_token %}
                 <div class="container col-lg-5 col-sm-12">
                     <h2>Faculty Registration</h2>
-                    <p style="color:orange;">Register with your orginisation!</p>
+                    <p style="color:orange;">Register with your organisation!</p>
                     {% bootstrap_form faculty %}
                     <input type="submit" class="btn btn-success" style="width: 100%;margin-top: 2rem;"
                         value="Sign Up" />
