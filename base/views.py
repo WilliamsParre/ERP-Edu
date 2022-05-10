@@ -400,18 +400,33 @@ def qualification(request):
 def settings(request):
     form = PasswordChangeForm(user=request.user)
 
+    user = User.objects.get(id=request.user.id)
+    group = user.groups.all()[0].name
+
+    pic = 'base/images/default_profile_pic.jpg'
+
+    if group == 'faculty':
+        pic = request.user.faculty.profile_pic
+    elif group == 'non_teaching':
+        pic = request.user.nonteaching.profile_pic
+    elif group == 'student':
+        pic = request.user.student.profile_pic
+
+    pic = str(pic).split('/')
+    pic = f"base/images/{pic[-1]}"
+
     if request.method == "POST":
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            messages.success(request, 'Passord changed successfully!')
+            messages.success(request, 'Password changed successfully!')
             form = PasswordChangeForm(user=request.user)
             return render(request, 'base/settings.html', {'form': form})
         else:
             messages.error(request, 'Error occured during form validation.')
 
-    return render(request, 'base/settings.html', {'form': form})
+    return render(request, 'base/settings.html', {'form': form, 'pic': pic})
 
 
 @login_required(login_url='login')
@@ -634,3 +649,20 @@ def delete_student(request, pk):
     Student.objects.get(u_id=pk).delete()
     messages.success(request, 'Student deleted successfully!')
     return redirect('manage')
+
+
+@login_required(login_url='login')
+def update_user_profile_settings(request):
+
+    form = UserProfileChangeForm(instance=request.user)
+
+    if request.method == "POST":
+        form = UserProfileChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return settings(request)
+        else:
+            messages.error(request, 'Error occured during form processing.')
+
+    return render(request, 'base/update_user_prof.html', {'form': form})

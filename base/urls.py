@@ -59,5 +59,10 @@ urlpatterns = [
     path('grades/', views.grades, name='grades'),
     path('qualification/', views.qualification, name='qualification'),
     path('profile/<str:pk>/', views.user_profile, name='profile'),
-    path('settings/', views.settings, name='settings')
+
+    # Settings for ALl users
+    path('settings/', views.settings, name='settings'),
+    path('edit_profile', views.update_user_profile_settings,
+         name='update_profile_settings')
+
 ]

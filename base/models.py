@@ -64,7 +64,8 @@ class Student(models.Model):
     email = models.EmailField()
     gender = models.CharField(max_length=10, choices=[(
         'Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')])
-    profile_pic = models.ImageField(upload_to='base/templates/', blank=True)
+    profile_pic = models.ImageField(
+        upload_to='base/static/base/images', default="base/static/base/images/default_profile_pic.jpg", blank=True)
     mobile = models.BigIntegerField()
     blood = models.CharField(max_length=5)
     parent_name = models.CharField(max_length=200)
@@ -92,7 +93,8 @@ class Faculty(models.Model):
     email = models.EmailField()
     gender = models.CharField(max_length=10, choices=[(
         'Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')])
-    profile_pic = models.ImageField(upload_to='base/templates/', blank=True)
+    profile_pic = models.ImageField(upload_to='base/static/base/images',
+                                    default="base/static/base/images/default_profile_pic.jpg", blank=True)
     mobile = models.BigIntegerField()
     blood = models.CharField(max_length=5)
     parent_name = models.CharField(max_length=200)
@@ -118,7 +120,8 @@ class NonTeaching(models.Model):
     email = models.EmailField()
     gender = models.CharField(max_length=10, choices=[(
         'Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')])
-    profile_pic = models.ImageField(upload_to='base/templates/', blank=True)
+    profile_pic = models.ImageField(upload_to='base/static/base/images',
+                                    default="base/static/base/images/default_profile_pic.jpg", blank=True)
     mobile = models.BigIntegerField()
     blood = models.CharField(max_length=5)
     parent_name = models.CharField(max_length=200)
