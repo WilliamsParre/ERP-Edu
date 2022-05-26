@@ -1,10 +1,8 @@
-import re
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from numpy import save, tile
 from .decorators import allowed_user
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
@@ -13,6 +11,8 @@ from leave.forms import Leave, NonTeachingLeave, LeaveForm, NonTeachingLeaveForm
 from base.models import Course, Faculty, NonTeaching, Organization, Student
 from django.contrib.auth import update_session_auth_hash
 import pandas as pd
+from datetime import date
+import holidays
 from plotly.offline import plot
 import plotly.express as px
 
@@ -156,9 +156,9 @@ def user_profile(request, pk):
     user = User.objects.get(id=pk)
     group = user.groups.all()[0].name
     profile = ''
-    if group == 'admin':
-        print('Hi you are admin')
-    elif group == 'faculty':
+    # if group == 'admin':
+    #     print('Hi you are admin')
+    if group == 'faculty':
         if Faculty.objects.all().count() > 0:
             profile = Faculty.objects.get(user=user.id)
     elif group == 'student':
@@ -331,7 +331,16 @@ def attendance(request):
 @login_required(login_url='login')
 @allowed_user(roles=['faculty', 'non_teaching'])
 def leave(request):
-    no_of_leaves = 0
+
+    today = date.today()
+    print(today.year)
+    indian_holidays = holidays.India(years=today.year)
+    holidays_list = []
+    for i in indian_holidays.keys():
+        holidays_list.append([i.strftime("%m/%d/%Y"), indian_holidays[i]])
+        # holidays_list[i.strftime("%m/%d/%Y")] = indian_holidays[i]
+        # print(i.strftime("%m/%d/%Y"))
+
     if request.user.groups.all()[0].name == 'non_teaching':
         user = NonTeaching.objects.get(user=request.user.id)
         leaves = NonTeachingLeave.objects.filter(e_id=user.nt_e_id)
@@ -353,7 +362,7 @@ def leave(request):
             e_id=user.e_id, leave_Status='Pending').count()
         no_of_leaves_declined = Leave.objects.filter(
             e_id=user.e_id, leave_Status='Declined').count()
-    return render(request, 'base/leave.html', {'leaves': leaves, 'total_leaves': total_leaves, 'no_of_leaves_granted': no_of_leaves_granted, 'no_of_leaves_pending': no_of_leaves_pending, 'no_of_leaves_declined': no_of_leaves_declined})
+    return render(request, 'base/leave.html', {'leaves': leaves, 'total_leaves': total_leaves, 'no_of_leaves_granted': no_of_leaves_granted, 'no_of_leaves_pending': no_of_leaves_pending, 'no_of_leaves_declined': no_of_leaves_declined, 'holidays_list': holidays_list})
 
 
 @login_required(login_url='login')
